@@ -50,10 +50,13 @@ public class IntercepterResult {
 
     public var errorInfo: [String: Any]?
 
-    public init(status: Status, intent: Intent, errorInfo: [String: Any]?) {
+    public var intercepter: IIntercepter?
+
+    public init(status: Status, intent: Intent, errorInfo: [String: Any]?, intercepter: IIntercepter? = nil) {
         self.status = status
         self.intent = intent
         self.errorInfo = errorInfo
+        self.intercepter = intercepter
     }
 }
 
@@ -83,7 +86,7 @@ public class IntercepterManager {
             }, switched: { next in
                 finish(IntercepterResult.init(status: .switched, intent: next, errorInfo: nil))
             }) { (errorInfo) in
-                finish(IntercepterResult.init(status: .rejected, intent: intent, errorInfo: errorInfo))
+                finish(IntercepterResult.init(status: .rejected, intent: intent, errorInfo: errorInfo, intercepter: intercepters[index]))
             }
         }
 

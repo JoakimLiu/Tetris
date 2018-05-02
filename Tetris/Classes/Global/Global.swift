@@ -11,10 +11,14 @@ import Foundation
 
 var globalModuler: Moduler!
 var globalRouter: Router!
+var globalServicer: Servicer!
 
-public func initialization(_ moduler: Moduler? = Moduler(), _ router: Router? = Router()) {
+public func initialization(_ moduler: Moduler? = Moduler.default,
+                           _ router: Router? = Router.default,
+                           _ servicer: Servicer? = Servicer.default) {
     globalRouter = router
     globalModuler = moduler
+    globalServicer = servicer
     TetrisInitializer.action
 }
 
@@ -24,6 +28,10 @@ public func getModuler() -> Moduler {
 
 public func getRouter() -> Router {
     return globalRouter
+}
+
+public func getServicer() -> Servicer {
+    return globalServicer
 }
 
 
@@ -42,6 +50,13 @@ public extension Composable where Self : URLRoutable, Self : UIViewController, S
 public extension Composable where Self : IIntercepter {
     static func tetrisInit() {
         getRouter().intercepterMgr.add(Self.init())
+    }
+}
+
+
+public extension Composable where Self : Servicable {
+    static func tetrisInit() {
+        getServicer().register(Self.self)
     }
 }
 

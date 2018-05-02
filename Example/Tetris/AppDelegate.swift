@@ -19,7 +19,7 @@ class AppDelegate: TetrisAppDelegate {
 
 //        Tetris.initialization()
 
-        Tetris.initialization(Moduler(), Router())
+        Tetris.initialization(Moduler(), Router(), Servicer())
 
         let _ = super.application(application, didFinishLaunchingWithOptions: launchOptions)
 
@@ -32,12 +32,6 @@ class AppDelegate: TetrisAppDelegate {
             }
         }
         window?.makeKeyAndVisible()
-
-//        Tetris.initialize()
-//
-//        Moduler.shared.trigger(Modulable.modulerInit)
-//
-//        Moduler.shared.trigger(event: 100)
 
         return true
 

@@ -19,6 +19,7 @@
 		61B857922B0DAE16FD738DB5CBA55359 /* Tetris-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 386D0272ED7934EC3E1D470D9405DF18 /* Tetris-dummy.m */; };
 		65F390464242B9019AEE66440C73C6B6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
 		A141EAB4555F66A9492642715774C178 /* Intent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D350D0877DB879859201C91DFFF647 /* Intent.swift */; };
+		A89FD5D32099935100FE16D9 /* Servicer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89FD5D22099935100FE16D9 /* Servicer.swift */; };
 		AE85001E3260FD4F08E2F1672E8E6650 /* Pods-Tetris_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2B9F9BB4FB930C5D9F4B059AEB77E /* Pods-Tetris_Tests-dummy.m */; };
 		BBF217808CEC8FF533772BACDA6C9EF9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
 		C512C425C78E0138B4B09EBBF6892DFB /* Pods-Tetris_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C0A4EC3FC6A4C91BD042AE7BB54773BC /* Pods-Tetris_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -73,6 +74,7 @@
 		9F191A1A2527E95DDD871AE06A76057D /* Pods-Tetris_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Tetris_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		A6B0C188B74C286CCE417377C0E3FA46 /* Pods-Tetris_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Tetris_Example.release.xcconfig"; sourceTree = "<group>"; };
 		A765ED2D584882599CDCA7743EE96AA1 /* Pods-Tetris_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Tetris_Tests.modulemap"; sourceTree = "<group>"; };
+		A89FD5D22099935100FE16D9 /* Servicer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Servicer.swift; sourceTree = "<group>"; };
 		B05B4B18185503B632CC93C23D897441 /* Pods-Tetris_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Tetris_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		B2EA0FA9DC379BDB55BC480BBCBC834F /* Pods-Tetris_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Tetris_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		C06A8ED2508116612470B130D2D363DB /* Pods-Tetris_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Tetris_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 		794E31323272878B619C57F4F1284483 /* Tetris */ = {
 			isa = PBXGroup;
 			children = (
+				A89FD5D12099932200FE16D9 /* Service */,
 				1D68F9EFD38CA8ED963A42F8A2A2C891 /* Global */,
 				E1E4BFBFE5E2ECC92445F8D66F311A88 /* Module */,
 				071E66C77D5B727B5721E5DA3BC7E9DB /* Namespace */,
@@ -208,6 +211,15 @@
 			);
 			name = "Pods-Tetris_Example";
 			path = "Target Support Files/Pods-Tetris_Example";
+			sourceTree = "<group>";
+		};
+		A89FD5D12099932200FE16D9 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				A89FD5D22099935100FE16D9 /* Servicer.swift */,
+			);
+			name = Service;
+			path = Tetris/Classes/Service;
 			sourceTree = "<group>";
 		};
 		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
@@ -405,6 +417,7 @@
 				2D664896B432CD0D736D816C136FC5DC /* Global.swift in Sources */,
 				DA939CD16B904AD6A8E653B4050FBFE2 /* Initializable.swift in Sources */,
 				A141EAB4555F66A9492642715774C178 /* Intent.swift in Sources */,
+				A89FD5D32099935100FE16D9 /* Servicer.swift in Sources */,
 				4D80EBFEF5E5739C5D7E292EC8B783C8 /* IIntercepter.swift in Sources */,
 				553D3C05D75F37FFF01060A4F03637C8 /* Moduler.swift in Sources */,
 				00F73137CE256E2888600A1EA23A483F /* Namespace.swift in Sources */,

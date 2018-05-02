@@ -13,10 +13,10 @@ public protocol Intentable {
 }
 
 public protocol ResponseReceivable {
-    func didReceive<T>(resp: T?, sender: Any, response code: Int);
+    func didReceive<T>(resp: T?, sender: Any, response respCode: Int, request reqCode: Int);
 }
 
-public typealias IntentResponse<T> = (T?, Any, Int) -> Void
+public typealias IntentResponse<T> = (T?, Any, Int, Int) -> Void
 
 public class Intent {
 
@@ -25,6 +25,7 @@ public class Intent {
     public var url: URL?
 
     public var responseCode: Int = 0
+    public var requestCode: Int = 0
 
     public var params = [String : Any]()
 
@@ -51,11 +52,15 @@ public class Intent {
         recevable = DefaultReceiver.init(resp)
     }
 
-    public func sendResp<T>(_ resp: T?, sender: Any, response code: Int = 0) {
-        recevable?.didReceive(resp: resp, sender: sender, response: code)
+    public func sendResp<T>(_ resp: T?, sender: Any, response respCode: Int = 0) {
+        recevable?.didReceive(resp: resp, sender: sender, response: respCode, request: requestCode)
     }
 
     public init() {
+
+    }
+
+    deinit {
 
     }
 
@@ -75,7 +80,7 @@ public class DefaultReceiver: ResponseReceivable {
         self.response = resp as Any
     }
 
-    public func didReceive<T>(resp: T?, sender: Any, response code: Int) {
-        (response as? IntentResponse)?(resp, sender, code)
+    public func didReceive<T>(resp: T?, sender: Any, response respCode: Int, request reqCode: Int) {
+        (response as? IntentResponse)?(resp, sender, respCode, reqCode)
     }
 }

@@ -14,6 +14,8 @@ public class Router {
 
     public init() {}
 
+    public static let `default` = Router()
+
     var intercepterMgr = IntercepterManager()
 
 }
@@ -109,7 +111,7 @@ public extension Router {
 
 // MARK: - RouteResult
 public class RouteResult {
-    public enum RouteResultStatus: Int {
+    public enum Status: Int {
         case passed
         case switched
         case rejected
@@ -119,9 +121,9 @@ public class RouteResult {
     public var destination: UIViewController?
     public var intent: Intent
     public var errorInfo: [String: Any]?
-    public var status: RouteResultStatus
+    public var status: Status
 
-    public init(status: RouteResultStatus, intent: Intent, destination: UIViewController? = nil, errorInfo: [String: Any]? = nil) {
+    public init(status: Status, intent: Intent, destination: UIViewController? = nil, errorInfo: [String: Any]? = nil) {
         self.destination = destination
         self.status = status
         self.intent = intent

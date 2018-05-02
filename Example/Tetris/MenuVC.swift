@@ -57,7 +57,8 @@ extension MenuVC : UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        Tetris.getRouter().start(data[indexPath.row].1(), source: self, completion: {
+        let intent = data[indexPath.row].1()
+        Tetris.getRouter().start(intent, source: self, completion: {
             print("---finish route---")
         }) { (result) in
             switch result.status {

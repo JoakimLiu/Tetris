@@ -18,27 +18,27 @@ public protocol Modulable {
 
     var priority: ModulePriority {get}
 
-    func modulerDidTrigger(_ event: Int, userInfo: [String: Any]) -> Void
+    func modulerDidTrigger(_ event: Int, userInfo: [String: Any])
 
-    func modulerInit(_ context: Context) -> Void
-    func modulerSetup(_ context: Context) -> Void
-    func modulerSplash(_ context: Context) -> Void
+    func modulerInit(_ context: Context)
+    func modulerSetup(_ context: Context)
+    func modulerSplash(_ context: Context)
 
-    func modulerWillResignActive(_ context: Context) -> Void
-    func modulerDidEnterBackground(_ context: Context) -> Void
-    func modulerWillEnterForeground(_ context: Context) -> Void
-    func modulerDidBecomeActive(_ context: Context) -> Void
+    func modulerWillResignActive(_ context: Context)
+    func modulerDidEnterBackground(_ context: Context)
+    func modulerWillEnterForeground(_ context: Context)
+    func modulerDidBecomeActive(_ context: Context)
 
-    func modulerWillTerminate(_ context: Context) -> Void
+    func modulerWillTerminate(_ context: Context)
 
-    func modulerDidReceiveRemoteNotification(_ context: Context) -> Void
-    func modulerDidRegisterRemoteNotification(_ context: Context) -> Void
+    func modulerDidReceiveRemoteNotification(_ context: Context)
+    func modulerDidRegisterRemoteNotification(_ context: Context)
 
-    func modulerDidReceiveLocalNotification(_ context: Context) -> Void
+    func modulerDidReceiveLocalNotification(_ context: Context)
 
-    func modulerHandleOpenURL(_ context: Context) -> Void
-    func modulerHandleOpenURL_SourceApplication_Annotation(_ context: Context) -> Void
-    func modulerHandleOpenURL_Options(_ context: Context) -> Void
+    func modulerHandleOpenURL(_ context: Context)
+    func modulerHandleOpenURL_SourceApplication_Annotation(_ context: Context)
+    func modulerHandleOpenURL_Options(_ context: Context)
 }
 
 public protocol ModuleComposable : Composable {}
@@ -84,21 +84,21 @@ open class AbstractModule : Modulable {
     public required init() {}
     open var priority: ModulePriority { return ModulePriority_low }
 
-    open func modulerDidTrigger(_ event: Int, userInfo: [String: Any]) -> Void {}
-    open func modulerInit(_ context: Context) -> Void {}
-    open func modulerSetup(_ context: Context) -> Void {}
-    open func modulerSplash(_ context: Context) -> Void {}
-    open func modulerWillResignActive(_ context: Context) -> Void {}
-    open func modulerDidEnterBackground(_ context: Context) -> Void {}
-    open func modulerWillEnterForeground(_ context: Context) -> Void {}
-    open func modulerDidBecomeActive(_ context: Context) -> Void {}
-    open func modulerWillTerminate(_ context: Context) -> Void {}
-    open func modulerDidReceiveRemoteNotification(_ context: Context) -> Void {}
-    open func modulerDidRegisterRemoteNotification(_ context: Context) -> Void {}
-    open func modulerDidReceiveLocalNotification(_ context: Context) -> Void {}
-    open func modulerHandleOpenURL(_ context: Context) -> Void {}
-    open func modulerHandleOpenURL_SourceApplication_Annotation(_ context: Context) -> Void {}
-    open func modulerHandleOpenURL_Options(_ context: Context) -> Void {}
+    open func modulerDidTrigger(_ event: Int, userInfo: [String: Any]) {}
+    open func modulerInit(_ context: Context) {}
+    open func modulerSetup(_ context: Context) {}
+    open func modulerSplash(_ context: Context) {}
+    open func modulerWillResignActive(_ context: Context) {}
+    open func modulerDidEnterBackground(_ context: Context) {}
+    open func modulerWillEnterForeground(_ context: Context) {}
+    open func modulerDidBecomeActive(_ context: Context) {}
+    open func modulerWillTerminate(_ context: Context) {}
+    open func modulerDidReceiveRemoteNotification(_ context: Context) {}
+    open func modulerDidRegisterRemoteNotification(_ context: Context) {}
+    open func modulerDidReceiveLocalNotification(_ context: Context) {}
+    open func modulerHandleOpenURL(_ context: Context) {}
+    open func modulerHandleOpenURL_SourceApplication_Annotation(_ context: Context) {}
+    open func modulerHandleOpenURL_Options(_ context: Context) {}
 }
 
 open class HighPriorityModule : AbstractModule {
@@ -116,6 +116,8 @@ open class LowPriorityModule : AbstractModule {
 public class Moduler {
 
     public init() {}
+
+    public static let `default` = Moduler()
 
     var modules: [AbstractModule] = [AbstractModule]()
 
