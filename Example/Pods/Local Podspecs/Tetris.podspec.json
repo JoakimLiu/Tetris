@@ -1,0 +1,22 @@
+{
+  "name": "Tetris",
+  "version": "0.1.0",
+  "summary": "A short description of Tetris.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/scubers/Tetris",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "scubers": "jr-wong@qq.com"
+  },
+  "source": {
+    "git": "https://github.com/scubers/Tetris.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "Tetris/Classes/**/*"
+}

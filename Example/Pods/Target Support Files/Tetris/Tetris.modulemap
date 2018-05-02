@@ -1,0 +1,6 @@
+framework module Tetris {
+  umbrella header "Tetris-umbrella.h"
+
+  export *
+  module * { export * }
+}
