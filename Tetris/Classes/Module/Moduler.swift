@@ -10,16 +10,15 @@ import Foundation
 // MARK: - Priority
 
 public typealias ModulePriority = Int
-
 public let ModulePriority_low: ModulePriority = 1000
 public let ModulePriority_normal: ModulePriority = 5000
 public let ModulePriority_high: ModulePriority = 10000
 
-public protocol IModulable {
+public protocol Modulable {
 
     var priority: ModulePriority {get}
 
-     func modulerDidTrigger(_ event: Int, userInfo: [String: Any]) -> Void
+    func modulerDidTrigger(_ event: Int, userInfo: [String: Any]) -> Void
 
     func modulerInit(_ context: Context) -> Void
     func modulerSetup(_ context: Context) -> Void
@@ -42,7 +41,7 @@ public protocol IModulable {
     func modulerHandleOpenURL_Options(_ context: Context) -> Void
 }
 
-public protocol ModuleComponent : Component {}
+public protocol ModuleComposable : Composable {}
 
 
 
@@ -81,7 +80,7 @@ public class RemoteNotificationItem {
 
 // MARK: - Modulable
 // 因为swift4的协议柯里化存在编译问题，暂时方法使用类进行定义，待 swift 修复之后再使用协议
-open class Modulable : IModulable {
+open class AbstractModule : Modulable {
     public required init() {}
     open var priority: ModulePriority { return ModulePriority_low }
 
@@ -102,13 +101,13 @@ open class Modulable : IModulable {
     open func modulerHandleOpenURL_Options(_ context: Context) -> Void {}
 }
 
-open class HighPriorityModulable : Modulable {
+open class HighPriorityModule : AbstractModule {
     open override var priority: ModulePriority {return ModulePriority_high}
 }
-open class NormalPriorityModulable : Modulable {
+open class NormalPriorityModule : AbstractModule {
     open override var priority: ModulePriority {return ModulePriority_normal}
 }
-open class LowPriorityModulable : Modulable {
+open class LowPriorityModule : AbstractModule {
     open override var priority: ModulePriority {return ModulePriority_low}
 }
 
@@ -118,9 +117,9 @@ public class Moduler {
 
     public init() {}
 
-    var modules: [Modulable] = [Modulable]()
+    var modules: [AbstractModule] = [AbstractModule]()
 
-    public func register(_ module: Modulable) {
+    public func register(_ module: AbstractModule) {
         let priority = module.priority
         let index = modules.index { $0.priority < priority }
         if let idx = index {
@@ -130,7 +129,7 @@ public class Moduler {
         }
     }
 
-    public func trigger(_ action: (Modulable) -> (Context) -> Void) {
+    public func trigger(_ action: (AbstractModule) -> (Context) -> Void) {
         modules.enumerated().forEach { (idx, module) in
             action(module)(Context.shared)
         }
@@ -149,10 +148,10 @@ public class Moduler {
 open class TetrisAppDelegate : UIResponder, UIApplicationDelegate {
     open func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
 
-        Tetris.getModuler().trigger(Modulable.modulerInit)
-        Tetris.getModuler().trigger(Modulable.modulerSetup)
+        Tetris.getModuler().trigger(AbstractModule.modulerInit)
+        Tetris.getModuler().trigger(AbstractModule.modulerSetup)
         DispatchQueue.global().async {
-            Tetris.getModuler().trigger(Modulable.modulerSplash)
+            Tetris.getModuler().trigger(AbstractModule.modulerSplash)
         }
         return true
     }
@@ -160,13 +159,13 @@ open class TetrisAppDelegate : UIResponder, UIApplicationDelegate {
     open func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         Context.shared.openURL = url
         Context.shared.openURLOptions = options
-        Tetris.getModuler().trigger(Modulable.modulerHandleOpenURL_Options)
+        Tetris.getModuler().trigger(AbstractModule.modulerHandleOpenURL_Options)
         return true
     }
 
     open func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
         Context.shared.openURL = url
-        Tetris.getModuler().trigger(Modulable.modulerHandleOpenURL)
+        Tetris.getModuler().trigger(AbstractModule.modulerHandleOpenURL)
         return true
     }
 
@@ -174,28 +173,28 @@ open class TetrisAppDelegate : UIResponder, UIApplicationDelegate {
         Context.shared.openURL = url
         Context.shared.sourceApplication = sourceApplication
         Context.shared.annotation = annotation
-        Tetris.getModuler().trigger(Modulable.modulerHandleOpenURL_SourceApplication_Annotation)
+        Tetris.getModuler().trigger(AbstractModule.modulerHandleOpenURL_SourceApplication_Annotation)
         return true
     }
 
     open func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
         Context.shared.remoteNotificationItem.userInfo = userInfo
-        Tetris.getModuler().trigger(Modulable.modulerDidReceiveRemoteNotification)
+        Tetris.getModuler().trigger(AbstractModule.modulerDidReceiveRemoteNotification)
     }
 
     open func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         Context.shared.remoteNotificationItem.failRegisterError = error
-        Tetris.getModuler().trigger(Modulable.modulerDidRegisterRemoteNotification)
+        Tetris.getModuler().trigger(AbstractModule.modulerDidRegisterRemoteNotification)
     }
 
     open func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
         Context.shared.localNotification = notification
-        Tetris.getModuler().trigger(Modulable.modulerDidReceiveLocalNotification)
+        Tetris.getModuler().trigger(AbstractModule.modulerDidReceiveLocalNotification)
     }
 
     open func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Context.shared.remoteNotificationItem.deviceToken = deviceToken
-        Tetris.getModuler().trigger(Modulable.modulerDidRegisterRemoteNotification)
+        Tetris.getModuler().trigger(AbstractModule.modulerDidRegisterRemoteNotification)
     }
 
 }

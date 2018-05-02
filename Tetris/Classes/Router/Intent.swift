@@ -55,11 +55,13 @@ public class Intent {
         recevable?.didReceive(resp: resp, sender: sender, response: code)
     }
 
-    public static func intent(_ url: URL? = nil, target: Intentable.Type? = nil) -> Intent {
-        let intent = Intent()
-        intent.target = target
-        intent.url = url
-        return intent
+    public init() {
+
+    }
+
+    public init(url: URL? = nil, target: Intentable.Type? = nil) {
+        self.target = target
+        self.url = url
     }
 
 }

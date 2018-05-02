@@ -9,12 +9,13 @@
 import UIKit
 import Tetris
 
-class MenuVC: BaseVC, URLRoutableComponent {
+class MenuVC: BaseVC, URLRoutableComposable {
 
     var data = [
-        ("1. Just Route!!", {return Intent.pushPop("/demo/1")}),
-        ("2. Parameters", {return Intent.pushPop("/demo/2?a=a&b=b")}),
-        ("3. Global lost", {return Intent.pushPop("/i_dont_know_where_to_go")}),
+        ("1. Just Route!!", {return Intent.pushPop(url: "/demo/1")}),
+        ("2. Parameters", {return Intent.pushPop(url: "/demo/2?a=a&b=b")}),
+        ("3. Final intercepter", {return Intent.pushPop(url: "/demo/3")}),
+        ("4. Global lost", {return Intent.pushPop(url: "/sdf/sdfoihg/sdkgjlj")}),
     ]
 
     var tableView: UITableView!
@@ -28,7 +29,6 @@ class MenuVC: BaseVC, URLRoutableComponent {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "1")
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
     override func didReceiveMemoryWarning() {

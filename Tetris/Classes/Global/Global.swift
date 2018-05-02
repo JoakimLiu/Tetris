@@ -27,21 +27,21 @@ public func getRouter() -> Router {
 }
 
 
-public extension Component where Self : IModulable {
+public extension Composable where Self : Modulable {
     public static func tetrisInit() {
-        globalModuler.register(Self.init() as! Modulable)
+        getModuler().register(Self.init() as! AbstractModule)
     }
 }
 
-public extension Component where Self : URLRoutable, Self : UIViewController, Self : Intentable {
+public extension Composable where Self : URLRoutable, Self : UIViewController, Self : Intentable {
     static func tetrisInit() {
-        globalRouter.register(Self.self, for: URL.init(string: self.routableURL)!)
+        getRouter().register(Self.self, for: URL.init(string: self.routableURL)!)
     }
 }
 
-public extension Component where Self : IIntercepter {
+public extension Composable where Self : IIntercepter {
     static func tetrisInit() {
-        globalRouter.intercepterMgr.add(Self.init())
+        getRouter().intercepterMgr.add(Self.init())
     }
 }
 

@@ -9,21 +9,21 @@
 import Foundation
 import Tetris
 
-class HighModule: HighPriorityModulable, ModuleComponent {
+class HighModule: HighPriorityModule, ModuleComposable {
 
     override func modulerInit(_ context: Context) {
         print("\(self)   \(#function)")
     }
 }
 
-class NormalModule: NormalPriorityModulable, ModuleComponent {
+class NormalModule: NormalPriorityModule, ModuleComposable {
 
     override func modulerInit(_ context: Context) {
         print("\(self)   \(#function)")
     }
 }
 
-class LowModule: LowPriorityModulable, ModuleComponent {
+class LowModule: LowPriorityModule, ModuleComposable {
 
     override func modulerInit(_ context: Context) {
         print("\(self)   \(#function)")

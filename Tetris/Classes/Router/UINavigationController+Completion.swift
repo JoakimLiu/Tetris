@@ -58,16 +58,16 @@ extension _TetrisNamespaceWrapper where Subject : UINavigationController {
 
 extension _TetrisNamespaceWrapper where Subject : UIViewController {
 
-    public func sendResp<T>(_ resp: T) {
-//        if let vc = obj as? ViewIntent.IntentTargetType {
-//            vc.getViewIntent()?.sendResp(resp, sender: self)
-//        }
+    public func sendResp<T>(_ resp: T?) {
+        if let vc = obj as? Intentable {
+            vc.sourceIntent?.sendResp(resp, sender: vc)
+        }
     }
 
     public func finishDisplay(animated: Bool = true, complete: IDisplayer.Completion? = nil) {
-//        if let vc = obj as? ViewIntent.IntentTargetType {
-//            vc.getViewIntent()?.displayer?.finishDisplay(vc, animated: animated, complete: complete)
-//        }
+        if let vc = obj as? (Intentable & UIViewController) {
+            vc.sourceIntent?.displayer?.finishDisplay(vc, animated: animated, complete: complete)
+        }
     }
 
 }

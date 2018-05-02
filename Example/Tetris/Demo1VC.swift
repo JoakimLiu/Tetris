@@ -9,7 +9,7 @@
 import UIKit
 import Tetris
 
-class Demo1VC: BaseVC, URLRoutableComponent {
+class Demo1VC: BaseVC, URLRoutableComposable {
 
     class var routableURL: String {return "/demo/1"}
 

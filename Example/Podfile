@@ -2,7 +2,7 @@ use_frameworks!
 
 target 'Tetris_Example' do
   pod 'Tetris', :path => '../'
-
+  
   target 'Tetris_Tests' do
       inherit! :search_paths  
       pod 'Tetris', :path => '../'

@@ -25,7 +25,7 @@ class AppDelegate: TetrisAppDelegate {
 
         window = UIWindow.init(frame: UIScreen.main.bounds)
 
-        Tetris.getRouter().start(Intent.pushPop("/demo/menu")) { (result) in
+        Tetris.getRouter().start(Intent.pushPop(url: "/demo/menu")) { (result) in
             if result.status == .passed
                 || result.status == .switched {
                 self.window?.rootViewController = UINavigationController.init(rootViewController: result.destination!)

@@ -21,6 +21,11 @@ class BaseVC : UIViewController, Intentable {
         super.viewDidLoad()
         view.backgroundColor = UIColor.lightGray
         navigationItem.title = NSStringFromClass(type(of: self))
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "back", style: .plain, target: self, action: #selector(BaseVC.backClick(sender:)))
+    }
+
+    @objc func backClick(sender: Any?) {
+        ts.finishDisplay()
     }
 
     func alert(msg: String) {

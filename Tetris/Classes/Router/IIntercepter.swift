@@ -14,7 +14,7 @@ public let IntercepterPriority_normal: IntercepterPriority = 5000
 public let IntercepterPriority_high: IntercepterPriority = 10000
 
 // MARK: - IntercepterAdjudgement
-public protocol IIntercepterJudger {
+public protocol IJudger {
     var source: UIViewController? {get}
     func getIntent() -> Intent
     func doSwitch(_ intent: Intent)
@@ -28,29 +28,29 @@ public protocol IIntercepter {
 
     var priority: IntercepterPriority {get}
 
-    func doAdjudgement(_ judger: IIntercepterJudger)
+    func doAdjudgement(_ judger: IJudger)
 }
 
 // MARK: - FinalIntercepter
 public protocol IFinalIntercepter : class {
-    static func finalAdjugement(_ judger: IIntercepterJudger)
+    static func finalAdjugement(_ judger: IJudger)
 }
 
 // MARK: - IntercepterResult
 public class IntercepterResult {
-    public enum InterceterResultStatus: Int {
+    public enum Status: Int {
         case passed
         case switched
         case rejected
     }
 
-    public var status: InterceterResultStatus = .passed
+    public var status: Status = .passed
 
     public var intent: Intent!
 
     public var errorInfo: [String: Any]?
 
-    public init(status: InterceterResultStatus, intent: Intent, errorInfo: [String: Any]?) {
+    public init(status: Status, intent: Intent, errorInfo: [String: Any]?) {
         self.status = status
         self.intent = intent
         self.errorInfo = errorInfo
@@ -77,7 +77,7 @@ public class IntercepterManager {
     func _run(_ intent: Intent, source: UIViewController?, intercepters: [IIntercepter], index: Int, finish: @escaping (IntercepterResult) -> Void) {
 
 
-        let getJudger: () -> IIntercepterJudger = {
+        let getJudger: () -> IJudger = {
             IntercepterJudger.init(intent: intent, source: source, continued: {
                 self._run(intent, source: source, intercepters: intercepters, index: index + 1, finish: finish)
             }, switched: { next in
@@ -104,7 +104,7 @@ public class IntercepterManager {
 
 // MARK: - IntercepterJudger
 
-class IntercepterJudger: IIntercepterJudger {
+class IntercepterJudger: IJudger {
 
     var continueFlag = false
     var rejectedFlag = false

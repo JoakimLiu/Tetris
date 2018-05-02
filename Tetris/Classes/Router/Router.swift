@@ -25,7 +25,8 @@ public protocol URLRoutable {
     static var routableURL: String {get}
 }
 
-public protocol URLRoutableComponent : URLRoutable, Component {}
+
+public protocol URLRoutableComposable : URLRoutable, Composable {}
 
 // MARK: - View Action
 
@@ -130,7 +131,7 @@ public class RouteResult {
 
 // MARK: - URLResult
 
-public class URLResult {
+public struct URLResult {
 
     public var value: Any?
 

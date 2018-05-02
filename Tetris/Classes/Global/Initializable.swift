@@ -11,7 +11,7 @@ public protocol Initializable : class {
     static func tetrisInit()
 }
 
-public protocol Component : Initializable {
+public protocol Composable : Initializable {
     init()
 }
 

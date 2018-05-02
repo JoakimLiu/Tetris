@@ -38,9 +38,9 @@ public extension IDisplayer {
     }
 }
 
-public class PushPopDisplayer : IDisplayer {
+open class PushPopDisplayer : IDisplayer {
 
-    public func finishDisplay(_ vc: UIViewController, animated: Bool, complete: IDisplayer.Completion?) {
+    open func finishDisplay(_ vc: UIViewController, animated: Bool, complete: IDisplayer.Completion?) {
         guard let nav = vc.navigationController else {
             return
         }
@@ -52,12 +52,33 @@ public class PushPopDisplayer : IDisplayer {
         }
     }
 
-    public func display(from fromVC: UIViewController, to toVC: UIViewController, animated: Bool, complete: IDisplayer.Completion?) {
+    open func display(from fromVC: UIViewController, to toVC: UIViewController, animated: Bool, complete: IDisplayer.Completion?) {
         guard let nav = fromVC.navigationController else {
             return
         }
 
         let _ = nav.ts.pushViewController(toVC, animated: animated, completion: complete)
+    }
+}
+
+open class PresentDismissDisplayer : IDisplayer {
+
+    open var source: UIViewController?
+
+    open var navType: UINavigationController.Type = UINavigationController.self
+
+    open func display(from fromVC: UIViewController, to toVC: UIViewController, animated: Bool, complete: IDisplayer.Completion?) {
+
+        if let to = toVC as? UINavigationController {
+            fromVC.present(to, animated: animated, completion: complete)
+        } else {
+            fromVC.present(navType.init(rootViewController: toVC), animated: animated, completion: complete)
+        }
+
+    }
+
+    open func finishDisplay(_ vc: UIViewController, animated: Bool, complete: IDisplayer.Completion?) {
+        (source ?? vc).dismiss(animated: animated, completion: complete)
     }
 
 
@@ -65,9 +86,15 @@ public class PushPopDisplayer : IDisplayer {
 
 
 public extension Intent {
-    public static func pushPop(_ url: String) -> Intent {
-        let intent = Intent.intent(URL.init(string: url))
+    public static func pushPop(url: String? = nil, target: Intentable.Type? = nil) -> Intent {
+        let intent = Intent.init(url: URL.init(string: url!), target: target)
         intent.displayer = PushPopDisplayer()
+        return intent
+    }
+
+    public static func presentDismiss(url: String? = nil, target: Intentable.Type? = nil) -> Intent {
+        let intent = Intent.init(url: URL.init(string: url!), target: target)
+        intent.displayer = PresentDismissDisplayer()
         return intent
     }
 }

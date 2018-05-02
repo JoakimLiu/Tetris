@@ -9,11 +9,12 @@
 import UIKit
 import Tetris
 
-class Demo3VC: BaseVC, URLRoutableComponent, IFinalIntercepter {
+class Demo3VC: BaseVC, URLRoutableComposable, IFinalIntercepter {
 
     class var routableURL: String {return "/demo/3"}
 
-    class func finalAdjugement(_ judger: IIntercepterJudger) {
+    class func finalAdjugement(_ judger: IJudger) {
+        print("-------do some biz logic here-------")
         judger.doContinue()
     }
 
