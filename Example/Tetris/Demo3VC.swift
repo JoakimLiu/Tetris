@@ -9,7 +9,7 @@
 import UIKit
 import Tetris
 
-class Demo3VC: BaseVC, URLRoutableComposable, IFinalIntercepter {
+class Demo3VC: BaseVC, URLRoutable, IComponent, IFinalIntercepter {
 
     class var routableURL: String {return "/demo/3"}
 

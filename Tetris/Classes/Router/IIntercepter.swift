@@ -31,6 +31,24 @@ public protocol IIntercepter {
     func doAdjudgement(_ judger: IJudger)
 }
 
+
+open class IntercepterAdaptor: IIntercepter {
+    public required init() {}
+    open var priority: IntercepterPriority {return IntercepterPriority_low}
+    open func doAdjudgement(_ judger: IJudger) {
+        judger.doContinue()
+    }
+}
+open class HighPriorityIntercepter: IntercepterAdaptor {
+    open override var priority: IntercepterPriority {return IntercepterPriority_high}
+}
+open class NormalPriorityIntercepter: IntercepterAdaptor {
+    open override var priority: IntercepterPriority {return IntercepterPriority_normal}
+}
+open class LowPriorityIntercepter: IntercepterAdaptor {
+    open override var priority: IntercepterPriority {return IntercepterPriority_low}
+}
+
 // MARK: - FinalIntercepter
 public protocol IFinalIntercepter : class {
     static func finalAdjugement(_ judger: IJudger)

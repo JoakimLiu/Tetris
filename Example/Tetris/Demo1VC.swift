@@ -9,7 +9,12 @@
 import UIKit
 import Tetris
 
-class Demo1VC: BaseVC, URLRoutableComposable {
+class Demo1VC: BaseVC, IRouterComponent, IFinalIntercepter {
+
+    static func finalAdjugement(_ judger: IJudger) {
+        judger.doContinue()
+    }
+
 
     class var routableURL: String {return "/demo/1"}
 

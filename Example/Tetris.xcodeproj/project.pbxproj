@@ -20,7 +20,9 @@
 		A853A6762094EB9A0011E9B0 /* Demo1VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A853A6752094EB9A0011E9B0 /* Demo1VC.swift */; };
 		A853A6782094ECFA0011E9B0 /* Demo2VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A853A6772094ECFA0011E9B0 /* Demo2VC.swift */; };
 		A853A67A2094EE280011E9B0 /* Demo3VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A853A6792094EE280011E9B0 /* Demo3VC.swift */; };
+		A89FD5D52099C92200FE16D9 /* Intercepters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89FD5D42099C92200FE16D9 /* Intercepters.swift */; };
 		A8EE58E320996BE100EF4615 /* Demo4VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EE58E220996BE100EF4615 /* Demo4VC.swift */; };
+		A8F11A21209AAE7A00C9F2DE /* Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F11A20209AAE7A00C9F2DE /* Injection.swift */; };
 		A8F40D8E20945EA0005D7C73 /* TetrisInitializableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F40D8D20945EA0005D7C73 /* TetrisInitializableTests.swift */; };
 		C5922DF68705C8869107652D /* Pods_Tetris_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E265AB8ADF5DC46E2184CC50 /* Pods_Tetris_Tests.framework */; };
 /* End PBXBuildFile section */
@@ -60,7 +62,9 @@
 		A853A6752094EB9A0011E9B0 /* Demo1VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo1VC.swift; sourceTree = "<group>"; };
 		A853A6772094ECFA0011E9B0 /* Demo2VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo2VC.swift; sourceTree = "<group>"; };
 		A853A6792094EE280011E9B0 /* Demo3VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo3VC.swift; sourceTree = "<group>"; };
+		A89FD5D42099C92200FE16D9 /* Intercepters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Intercepters.swift; sourceTree = "<group>"; };
 		A8EE58E220996BE100EF4615 /* Demo4VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo4VC.swift; sourceTree = "<group>"; };
+		A8F11A20209AAE7A00C9F2DE /* Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injection.swift; sourceTree = "<group>"; };
 		A8F40D8D20945EA0005D7C73 /* TetrisInitializableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetrisInitializableTests.swift; sourceTree = "<group>"; };
 		C119B863B853375DC40C931A /* Pods-Tetris_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tetris_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tetris_Tests/Pods-Tetris_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		D6707E4757D02E884B7AE8EC /* Pods_Tetris_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tetris_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,6 +141,8 @@
 				A853A6772094ECFA0011E9B0 /* Demo2VC.swift */,
 				A853A6792094EE280011E9B0 /* Demo3VC.swift */,
 				A8EE58E220996BE100EF4615 /* Demo4VC.swift */,
+				A89FD5D42099C92200FE16D9 /* Intercepters.swift */,
+				A8F11A20209AAE7A00C9F2DE /* Injection.swift */,
 			);
 			name = "Example for Tetris";
 			path = Tetris;
@@ -317,10 +323,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Tetris_Example/Pods-Tetris_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Swinject/Swinject.framework",
 				"${BUILT_PRODUCTS_DIR}/Tetris/Tetris.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Swinject.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Tetris.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -403,9 +411,11 @@
 			files = (
 				A853A661209482A70011E9B0 /* TestBridge.m in Sources */,
 				A853A67A2094EE280011E9B0 /* Demo3VC.swift in Sources */,
+				A8F11A21209AAE7A00C9F2DE /* Injection.swift in Sources */,
 				607FACD81AFB9204008FA782 /* MenuVC.swift in Sources */,
 				A8EE58E320996BE100EF4615 /* Demo4VC.swift in Sources */,
 				A853A65D20947C100011E9B0 /* Modules.swift in Sources */,
+				A89FD5D52099C92200FE16D9 /* Intercepters.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				A853A6702094E1BF0011E9B0 /* BaseVC.swift in Sources */,
 				A853A6762094EB9A0011E9B0 /* Demo1VC.swift in Sources */,

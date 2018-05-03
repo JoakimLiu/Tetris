@@ -9,7 +9,7 @@
 import UIKit
 import Tetris
 
-class Demo4VC: BaseVC, URLRoutableComposable {
+class Demo4VC: BaseVC, URLRoutable, IComponent {
 
     static var routableURL: String {return "/demo/4"}
 
@@ -22,13 +22,13 @@ class Demo4VC: BaseVC, URLRoutableComposable {
 
 }
 
-public class GlobalIntercepter: IIntercepter, Composable {
 
-    public var priority: IntercepterPriority {return IntercepterPriority_low - 1000}
 
-    public required init () {}
+public class GlobalIntercepter: LowPriorityIntercepter, IComponent {
 
-    public func doAdjudgement(_ judger: IJudger) {
+    public override var priority: IntercepterPriority {return IntercepterPriority_low - 1000}
+
+    public override func doAdjudgement(_ judger: IJudger) {
         if let _ = judger.getIntent().target {
             judger.doContinue()
         } else {

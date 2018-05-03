@@ -9,15 +9,15 @@
 import XCTest
 @testable import Tetris
 
-class RandomClass: Initializable {
-    static func tetrisInit() {
+class RandomClass: Awakable {
+    static func tetrisAwake() {
         print("\(self) tetrisInit")
     }
 }
 
-class TetrisInitializableTests: XCTestCase, Initializable {
+class TetrisInitializableTests: XCTestCase, Awakable {
 
-    static func tetrisInit() {
+    static func tetrisAwake() {
         print("\(self) tetrisInit")
     }
     

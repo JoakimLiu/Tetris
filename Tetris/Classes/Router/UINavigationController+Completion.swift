@@ -20,36 +20,36 @@ extension _TetrisNamespaceWrapper where Subject : UINavigationController {
             }
         }
         else if let completion = completion {
-            obj.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (contex) in
+            subject.transitionCoordinator?.animate(alongsideTransition: nil, completion: { (contex) in
                 completion()
             })
         }
     }
 
     public func setViewControllers(_ vcs: [UIViewController], animated: Bool = true, completion: IDisplayer.Completion? = nil) {
-        obj.setViewControllers(vcs, animated: animated)
+        subject.setViewControllers(vcs, animated: animated)
         executeWithCompletion(completion, animted: animated)
     }
 
     public func pushViewController(_ vc: UIViewController, animated: Bool = true, completion: IDisplayer.Completion? = nil) {
-        obj.pushViewController(vc, animated: animated)
+        subject.pushViewController(vc, animated: animated)
         executeWithCompletion(completion, animted: animated)
     }
 
     public func popViewController(_ animated: Bool = true, completion: IDisplayer.Completion? = nil) -> UIViewController? {
-        let vc = obj.popViewController(animated: animated)
+        let vc = subject.popViewController(animated: animated)
         executeWithCompletion(completion, animted: animated)
         return vc
     }
 
     public func popToViewController(_ vc: UIViewController, animated: Bool = true, completion: IDisplayer.Completion? = nil) -> [UIViewController]? {
-        let vcs = obj.popToViewController(vc, animated: animated)
+        let vcs = subject.popToViewController(vc, animated: animated)
         executeWithCompletion(completion, animted: animated)
         return vcs
     }
 
     public func popToRootViewContoller(_ animated: Bool = true, completion: IDisplayer.Completion? = nil) -> [UIViewController]? {
-        let vcs = obj.popToRootViewController(animated: animated)
+        let vcs = subject.popToRootViewController(animated: animated)
         executeWithCompletion(completion, animted: animated)
         return vcs
     }
@@ -59,15 +59,19 @@ extension _TetrisNamespaceWrapper where Subject : UINavigationController {
 extension _TetrisNamespaceWrapper where Subject : UIViewController {
 
     public func sendResp<T>(_ resp: T?) {
-        if let vc = obj as? Intentable {
+        if let vc = subject as? Intentable {
             vc.sourceIntent?.sendResp(resp, sender: vc)
         }
     }
 
     public func finishDisplay(animated: Bool = true, complete: IDisplayer.Completion? = nil) {
-        if let vc = obj as? (Intentable & UIViewController) {
+        if let vc = subject as? (Intentable & UIViewController) {
             vc.sourceIntent?.displayer?.finishDisplay(vc, animated: animated, complete: complete)
         }
+    }
+
+    public func start(intent: Intent, complete: IDisplayer.Completion? = nil, finish: ((RouteResult) -> Void)? = nil) {
+        getRouter().start(intent, source: subject, completion: complete) { finish?($0) }
     }
 
 }

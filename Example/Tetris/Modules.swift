@@ -9,25 +9,25 @@
 import Foundation
 import Tetris
 
-class HighModule: HighPriorityModule, ModuleComposable {
+class HighModule: HighPriorityModule, IModuleComponent {
 
     override func modulerInit(_ context: Context) {
         print("\(self)   \(#function)")
     }
 }
 
-class NormalModule: NormalPriorityModule, ModuleComposable {
+class NormalModule: NormalPriorityModule, IModuleComponent {
 
     override func modulerInit(_ context: Context) {
         print("\(self)   \(#function)")
     }
 }
 
-class LowModule: LowPriorityModule, ModuleComposable {
+class LowModule: LowPriorityModule, IModuleComponent {
 
     override func modulerInit(_ context: Context) {
         print("\(self)   \(#function)")
-        let a: Service1? = Tetris.getServicer().get()
+        let a: Service1? = Tetris.getServicer().get("service1")
         a?.method1()
     }
 
@@ -43,22 +43,20 @@ protocol Service2 {
 }
 
 
-class Service1Impl: Service1, ServiceComposable {
+class Service1Impl: Service1, IServiceComponent {
+    static func config(_ profile: ServiceProfile<Service1>) {
+        profile
+            .setAwake { (r, s) in
+                (s as! Service1Impl).service2 = r.get()
+            }
+            .setName("service1")
+    }
 
-    static var type: Any.Type? {return Service1.self}
+    typealias Interface = Service1
 
     var service2: Service2?
 
     required init() { }
-
-    func awake(from servicer: Servicer) {
-        service2 = servicer.get()
-    }
-
-    static var name: String? {
-        return "name"
-
-    }
 
     func method1() {
         print("method1 execute")
@@ -66,45 +64,33 @@ class Service1Impl: Service1, ServiceComposable {
     }
 }
 
-class Service2Impl: Service2, ServiceComposable {
+class Service2Impl: Service2, IServiceComponent {
     required init() {
     }
-    static var type: Any.Type? {return Service2.self}
+    static func config(_ profile: ServiceProfile<Service2>) {
+    }
     func method2() {
         print("method2 execute")
     }
+    typealias Interface = Service2
+
+
 }
 
 
 
-
-protocol AAA {
-    associatedtype AE
-    func create() -> AE
-}
-
-//var obj: AAA?
-
-class BBB: AAA {
-    typealias AE = String
-    func create() -> String {
-        return ""
+class AService: Service1, IService, IComponent  {
+    static func config(_ profile: ServiceProfile<Service1>) {
     }
-}
-
-
-class Factory {
-
-    func get<P, T: AAA>(_ dep: P.Type) -> T? where T.AE == P {
-        return nil
+    static func tetrisAwake() {
+        let p = profile()
+        config(p)
     }
 
-    func aaa() {
-//        let ret: AAA? = get(String.self)
-//        let ret: AAA where AAA.AE == String = get()
+    required init() {}
+    typealias Interface = Service1
+    func method1() {
     }
-
 }
-
 
 

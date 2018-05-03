@@ -16,7 +16,7 @@ public class Router {
 
     public static let `default` = Router()
 
-    var intercepterMgr = IntercepterManager()
+    public let intercepterMgr = IntercepterManager()
 
 }
 
@@ -26,9 +26,6 @@ public class Router {
 public protocol URLRoutable {
     static var routableURL: String {get}
 }
-
-
-public protocol URLRoutableComposable : URLRoutable, Composable {}
 
 // MARK: - View Action
 

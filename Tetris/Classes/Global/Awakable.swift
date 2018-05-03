@@ -7,13 +7,15 @@
 
 import Foundation
 
-public protocol Initializable : class {
-    static func tetrisInit()
+public protocol Awakable : class {
+    static func tetrisAwake()
 }
 
-public protocol Composable : Initializable {
+public protocol Initializable {
     init()
 }
+
+public protocol IComponent : Awakable, Initializable {}
 
 class TetrisInitializer {
 
@@ -28,7 +30,7 @@ class TetrisInitializer {
         objc_getClassList(autoreleasingTypes, Int32(typeCount))
         let begin = Date.init().timeIntervalSince1970
         for index in 0 ..< typeCount {
-            (types[index] as? Initializable.Type)?.tetrisInit()
+            (types[index] as? Awakable.Type)?.tetrisAwake()
         }
         let end = Date().timeIntervalSince1970
         print("\(begin)")

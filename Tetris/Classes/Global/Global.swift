@@ -11,11 +11,11 @@ import Foundation
 
 var globalModuler: Moduler!
 var globalRouter: Router!
-var globalServicer: Servicer!
+var globalServicer: Server!
 
 public func initialization(_ moduler: Moduler? = Moduler.default,
                            _ router: Router? = Router.default,
-                           _ servicer: Servicer? = Servicer.default) {
+                           _ servicer: Server? = Server.default) {
     globalRouter = router
     globalModuler = moduler
     globalServicer = servicer
@@ -30,33 +30,42 @@ public func getRouter() -> Router {
     return globalRouter
 }
 
-public func getServicer() -> Servicer {
+public func getServicer() -> Server {
     return globalServicer
 }
 
 
-public extension Composable where Self : Modulable {
-    public static func tetrisInit() {
+public typealias IModuleComponent = (IComponent)
+
+public extension IComponent where Self : Modulable {
+    public static func tetrisAwake() {
         getModuler().register(Self.init() as! AbstractModule)
     }
 }
 
-public extension Composable where Self : URLRoutable, Self : UIViewController, Self : Intentable {
-    static func tetrisInit() {
+public typealias IRouterComponent = (URLRoutable & IComponent)
+
+public extension IComponent where Self : URLRoutable, Self : UIViewController, Self : Intentable {
+    static func tetrisAwake() {
         getRouter().register(Self.self, for: URL.init(string: self.routableURL)!)
     }
 }
 
-public extension Composable where Self : IIntercepter {
-    static func tetrisInit() {
+public typealias IIntercepterComponent = (IIntercepter & IComponent)
+public extension IComponent where Self : IIntercepter {
+    static func tetrisAwake() {
         getRouter().intercepterMgr.add(Self.init())
     }
 }
 
-
-public extension Composable where Self : Servicable {
-    static func tetrisInit() {
-        getServicer().register(Self.self)
+public typealias IServiceComponent = (IService & IComponent)
+public extension IComponent where Self : IService {
+    static func tetrisAwake() {
+        let p = profile()
+        config(p)
+        let servicer = getServicer()
+        p.servicer = servicer
+        servicer.register(p)
     }
 }
 

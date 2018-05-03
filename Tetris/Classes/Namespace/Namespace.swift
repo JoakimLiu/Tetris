@@ -9,9 +9,9 @@ import Foundation
 
 
 public final class _TetrisNamespaceWrapper<Subject> {
-    let obj: Subject
-    public init(_ obj: Subject) {
-        self.obj = obj
+    let subject: Subject
+    public init(_ subject: Subject) {
+        self.subject = subject
     }
 }
 
