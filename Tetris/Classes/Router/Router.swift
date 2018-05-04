@@ -7,12 +7,33 @@
 
 import Foundation
 
+public protocol URLPresentable {
+    func toURL() throws -> URL
+}
+
+extension String : URLPresentable {
+    public func toURL() throws -> URL {
+        if let url = URL.init(string: self) {
+            return url
+        }
+        throw TetrisError.error(domain: "url convert fail", code: 2000, info: nil)
+    }
+}
+
+extension URL : URLPresentable {
+    public func toURL() throws -> URL {
+        return self
+    }
+}
+
 
 public class Router {
 
     var viewTree = Tree()
 
     var actionTree = Tree()
+
+    var broadTree = Tree()
 
     public init() {}
 
@@ -26,15 +47,16 @@ public class Router {
 // MARK: - View Registery
 
 public protocol URLRoutable {
-    static var routableURL: String {get}
+    static var routableURL: URLPresentable {get}
 }
 
 // MARK: - View Action
 
 public extension Router {
 
-    public func register(_ type: Intentable.Type, for url: URL) {
-        guard let result = URLResult.init(url: url) else {
+    public func register(_ url: URLPresentable, type: Intentable.Type) throws {
+
+        guard let result = try URLResult.init(url: url.toURL()) else {
             return
         }
         viewTree.buildTree(nodePath: NodePath.init(path: result.paths, value: type))
@@ -134,16 +156,58 @@ public class RouteResult {
 
 public extension Router {
 
-    public typealias RouterAction = ([String: Any], String?) -> Void
+    public typealias RouterAction<T> = ([String: Any], String?, Packager<T>) -> Void
 
-    public func register(_ action: RouterAction, for url: URL) {
-        let result = URLResult.init(url: url)
-        let path = NodePath.init(path: result!.paths, value: action)
-        actionTree.buildTree(nodePath: path)
+    public func register<Result>(_ url: URLPresentable, action: @escaping RouterAction<Result>) throws {
+        if let result = try URLResult.init(url: url.toURL()) {
+            let path = NodePath.init(path: result.paths, value: action)
+            actionTree.buildTree(nodePath: path)
+        }
     }
 
-    public func action<Result>(_ url: URL, params: [String : Any] = [:], callback: (Result?, Error?) -> Void) {
+    public func action<Result>(_ url: URLPresentable, params: [String : Any] = [:]) throws -> Delivery<Result> {
 
+        let result = try URLResult.init(url: url.toURL())
+
+        if let result = result,
+            let nodeRet = actionTree.findNode(by: result.paths),
+            let action: RouterAction<Result> = nodeRet.1.getValue() {
+
+            var parameters = params
+
+            result.params.forEach { (key, value) in
+                parameters[key] = value
+            }
+
+            return Delivery.init({ (p) in
+                action(parameters, result.fragment, p)
+                return nil
+            })
+
+        } else {
+            return Delivery.error(TetrisError.error(domain: "can not find action!!!", code: 1000, info: nil))
+        }
+    }
+}
+
+// MARK: - Broadcast
+
+extension Router {
+
+    public func register(_ url: URLPresentable, broadcast: Broadcast<[String: Any]>) throws {
+        if let result = try URLResult.init(url: url.toURL()) {
+            let path = NodePath.init(path: result.paths, value: broadcast)
+            broadTree.buildTree(nodePath: path)
+        }
+    }
+
+    public func broadcast(_ url: URLPresentable) throws -> Broadcast<[String: Any]>? {
+        if let result = try URLResult.init(url: url.toURL()),
+            let findResult = broadTree.findNode(by: result.paths),
+            let broadcast: Broadcast<[String: Any]> = findResult.1.getValue() {
+            return broadcast
+        }
+        return nil
     }
 }
 

@@ -15,7 +15,7 @@ public let ModulePriority_low: ModulePriority = 1000
 public let ModulePriority_normal: ModulePriority = 5000
 public let ModulePriority_high: ModulePriority = 10000
 
-public protocol Modulable {
+public protocol Modulable : Initializable {
 
     var priority: ModulePriority {get}
 

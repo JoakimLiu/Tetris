@@ -20,7 +20,7 @@ class MenuVC: BaseVC, URLRoutable, IComponent {
 
     var tableView: UITableView!
 
-    class var routableURL: String {return "/demo/menu"}
+    class var routableURL: URLPresentable {return "/demo/menu"}
 
     override func viewDidLoad() {
         super.viewDidLoad()

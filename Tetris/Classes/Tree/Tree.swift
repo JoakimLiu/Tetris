@@ -206,7 +206,8 @@ final public class TreeNode {
         if let existsNode = childs[child.key] {
             if child.isEndingNode {
                 if let _: Any = existsNode.getValue() {
-                    assert(false, "error: multiple ending: \(existsNode.getPathToRoot())!!!!")
+                    print("error: multiple ending: \(existsNode.getPathToRoot())!!!!")
+                    fatalError()
                 }
                 existsNode.set(value: child.getValue())
             }

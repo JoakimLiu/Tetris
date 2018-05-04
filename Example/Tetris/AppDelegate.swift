@@ -19,7 +19,7 @@ class AppDelegate: TetrisAppDelegate {
 
 //        Tetris.initialization()
 
-        Tetris.initialization(Moduler(), Router(), Server())
+        Tetris.start(Moduler(), Router(), Server())
 
         let _ = super.application(application, didFinishLaunchingWithOptions: launchOptions)
 

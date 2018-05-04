@@ -17,13 +17,13 @@ public protocol Initializable {
 
 public protocol IComponent : Awakable, Initializable {}
 
-class TetrisInitializer {
+class TetrisAwaker {
 
     static let action: Void = {
-        execute()
+        awake()
     }()
 
-    private static func execute() {
+    private static func awake() {
         let typeCount = Int(objc_getClassList(nil, 0))
         let types = UnsafeMutablePointer<AnyClass>.allocate(capacity: typeCount)
         let autoreleasingTypes = AutoreleasingUnsafeMutablePointer<AnyClass>(types)

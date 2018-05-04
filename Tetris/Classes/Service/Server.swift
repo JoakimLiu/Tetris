@@ -24,9 +24,18 @@ public class Server {
     public func register(_ profile: IServiceProfile) {
         
         if let name = profile.name {
+            if let _ = nameService[name] {
+                print("Service: \(name) has been registered!!!")
+                fatalError()
+            }
             nameService[name] = profile
         } else {
-            oriService[getName(with: profile.interface)] = profile
+            let key = getName(with: profile.interface)
+            if let _ = oriService[key] {
+                print("Service: \(profile.interface) has been registered!!!")
+                fatalError()
+            }
+            oriService[key] = profile
         }
     }
 

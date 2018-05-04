@@ -11,15 +11,15 @@ import Foundation
 
 var globalModuler: Moduler!
 var globalRouter: Router!
-var globalServicer: Server!
+var globalServer: Server!
 
-public func initialization(_ moduler: Moduler? = Moduler.default,
+public func start(_ moduler: Moduler? = Moduler.default,
                            _ router: Router? = Router.default,
                            _ servicer: Server? = Server.default) {
     globalRouter = router
     globalModuler = moduler
-    globalServicer = servicer
-    TetrisInitializer.action
+    globalServer = servicer
+    TetrisAwaker.action
 }
 
 public func getModuler() -> Moduler {
@@ -30,24 +30,22 @@ public func getRouter() -> Router {
     return globalRouter
 }
 
-public func getServicer() -> Server {
-    return globalServicer
+public func getServer() -> Server {
+    return globalServer
 }
 
 
 public typealias IModuleComponent = (IComponent)
-
-public extension IComponent where Self : Modulable {
+public extension IComponent where Self : AbstractModule {
     public static func tetrisAwake() {
-        getModuler().register(Self.init() as! AbstractModule)
+        getModuler().register(Self.init())
     }
 }
 
 public typealias IRouterComponent = (URLRoutable & IComponent)
-
 public extension IComponent where Self : URLRoutable, Self : UIViewController, Self : Intentable {
     static func tetrisAwake() {
-        getRouter().register(Self.self, for: URL.init(string: self.routableURL)!)
+        try! getRouter().register(self.routableURL, type: Self.self)
     }
 }
 
@@ -63,7 +61,7 @@ public extension IComponent where Self : IService {
     static func tetrisAwake() {
         let p = profile()
         config(p)
-        let servicer = getServicer()
+        let servicer = getServer()
         p.servicer = servicer
         servicer.register(p)
     }

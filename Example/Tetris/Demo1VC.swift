@@ -16,7 +16,7 @@ class Demo1VC: BaseVC, IRouterComponent, IFinalIntercepter {
     }
 
 
-    class var routableURL: String {return "/demo/1"}
+    class var routableURL: URLPresentable {return "/demo/1"}
 
 
     override func viewDidLoad() {

@@ -11,7 +11,7 @@ import Tetris
 
 class Demo3VC: BaseVC, URLRoutable, IComponent, IFinalIntercepter {
 
-    class var routableURL: String {return "/demo/3"}
+    class var routableURL: URLPresentable {return "/demo/3"}
 
     class func finalAdjugement(_ judger: IJudger) {
         print("-------do some biz logic here-------")

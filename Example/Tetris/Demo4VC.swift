@@ -11,7 +11,7 @@ import Tetris
 
 class Demo4VC: BaseVC, URLRoutable, IComponent {
 
-    static var routableURL: String {return "/demo/4"}
+    static var routableURL: URLPresentable {return "/demo/4"}
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -27,7 +27,7 @@ class LowModule: LowPriorityModule, IModuleComponent {
 
     override func modulerInit(_ context: Context) {
         print("\(self)   \(#function)")
-        let a: Service1? = Tetris.getServicer().get("service1")
+        let a: Service1? = Tetris.getServer().get("service1")
         a?.method1()
     }
 
@@ -77,20 +77,5 @@ class Service2Impl: Service2, IServiceComponent {
 
 }
 
-
-
-class AService: Service1, IService, IComponent  {
-    static func config(_ profile: ServiceProfile<Service1>) {
-    }
-    static func tetrisAwake() {
-        let p = profile()
-        config(p)
-    }
-
-    required init() {}
-    typealias Interface = Service1
-    func method1() {
-    }
-}
 
 
