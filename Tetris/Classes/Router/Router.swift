@@ -12,6 +12,8 @@ public class Router {
 
     var viewTree = Tree()
 
+    var actionTree = Tree()
+
     public init() {}
 
     public static let `default` = Router()
@@ -125,6 +127,23 @@ public class RouteResult {
         self.status = status
         self.intent = intent
         self.errorInfo = errorInfo
+    }
+}
+
+// MARK: - Actions
+
+public extension Router {
+
+    public typealias RouterAction = ([String: Any], String?) -> Void
+
+    public func register(_ action: RouterAction, for url: URL) {
+        let result = URLResult.init(url: url)
+        let path = NodePath.init(path: result!.paths, value: action)
+        actionTree.buildTree(nodePath: path)
+    }
+
+    public func action<Result>(_ url: URL, params: [String : Any] = [:], callback: (Result?, Error?) -> Void) {
+
     }
 }
 

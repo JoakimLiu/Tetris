@@ -24,6 +24,7 @@
 		A8EE58E320996BE100EF4615 /* Demo4VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8EE58E220996BE100EF4615 /* Demo4VC.swift */; };
 		A8F11A21209AAE7A00C9F2DE /* Injection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F11A20209AAE7A00C9F2DE /* Injection.swift */; };
 		A8F40D8E20945EA0005D7C73 /* TetrisInitializableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F40D8D20945EA0005D7C73 /* TetrisInitializableTests.swift */; };
+		A8F9EF05209C0FBF009CC2C0 /* DeliveryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F9EF04209C0FBF009CC2C0 /* DeliveryTest.swift */; };
 		C5922DF68705C8869107652D /* Pods_Tetris_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E265AB8ADF5DC46E2184CC50 /* Pods_Tetris_Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -66,6 +67,7 @@
 		A8EE58E220996BE100EF4615 /* Demo4VC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Demo4VC.swift; sourceTree = "<group>"; };
 		A8F11A20209AAE7A00C9F2DE /* Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injection.swift; sourceTree = "<group>"; };
 		A8F40D8D20945EA0005D7C73 /* TetrisInitializableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TetrisInitializableTests.swift; sourceTree = "<group>"; };
+		A8F9EF04209C0FBF009CC2C0 /* DeliveryTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryTest.swift; sourceTree = "<group>"; };
 		C119B863B853375DC40C931A /* Pods-Tetris_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tetris_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tetris_Tests/Pods-Tetris_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		D6707E4757D02E884B7AE8EC /* Pods_Tetris_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tetris_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E265AB8ADF5DC46E2184CC50 /* Pods_Tetris_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tetris_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -143,6 +145,7 @@
 				A8EE58E220996BE100EF4615 /* Demo4VC.swift */,
 				A89FD5D42099C92200FE16D9 /* Intercepters.swift */,
 				A8F11A20209AAE7A00C9F2DE /* Injection.swift */,
+				A8F9EF04209C0FBF009CC2C0 /* DeliveryTest.swift */,
 			);
 			name = "Example for Tetris";
 			path = Tetris;
@@ -323,12 +326,10 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Tetris_Example/Pods-Tetris_Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Swinject/Swinject.framework",
 				"${BUILT_PRODUCTS_DIR}/Tetris/Tetris.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Swinject.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Tetris.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -410,6 +411,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A853A661209482A70011E9B0 /* TestBridge.m in Sources */,
+				A8F9EF05209C0FBF009CC2C0 /* DeliveryTest.swift in Sources */,
 				A853A67A2094EE280011E9B0 /* Demo3VC.swift in Sources */,
 				A8F11A21209AAE7A00C9F2DE /* Injection.swift in Sources */,
 				607FACD81AFB9204008FA782 /* MenuVC.swift in Sources */,

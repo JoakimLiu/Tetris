@@ -28,7 +28,5 @@ class Demo1VC: BaseVC, IRouterComponent, IFinalIntercepter {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
-    
-
 
 }
