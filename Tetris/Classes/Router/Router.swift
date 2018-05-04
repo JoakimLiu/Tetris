@@ -62,6 +62,15 @@ public extension Router {
         viewTree.buildTree(nodePath: NodePath.init(path: result.paths, value: type))
     }
 
+    public func prepare(_ intent: Intent, source: UIViewController? = nil, completion: IDisplayer.Completion? = nil) -> Delivery<RouteResult> {
+        return Delivery<RouteResult>.init({ (p) in
+            self.start(intent, source: source, completion: completion, finish: { (result) in
+                p.package(result, error: nil)
+            })
+            return nil
+        })
+    }
+
     public func start(_ intent: Intent, source: UIViewController? = nil, completion: IDisplayer.Completion? = nil, finish: @escaping (RouteResult) -> Void) {
         _start(intent, source: source, switched: false, completion: completion, finish: finish)
     }

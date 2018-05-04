@@ -14,9 +14,11 @@ extension UIViewController : TetrisNamespacing {
 extension _TetrisNamespaceWrapper where Subject : UINavigationController {
 
     private func executeWithCompletion(_ completion: IDisplayer.Completion?, animted: Bool) {
-        if let completion = completion, animted {
-            DispatchQueue.main.async {
-                completion()
+        if !animted {
+            if let completion = completion {
+                DispatchQueue.main.async {
+                    completion()
+                }
             }
         }
         else if let completion = completion {
@@ -72,6 +74,10 @@ extension _TetrisNamespaceWrapper where Subject : UIViewController {
 
     public func start(intent: Intent, complete: IDisplayer.Completion? = nil, finish: ((RouteResult) -> Void)? = nil) {
         getRouter().start(intent, source: subject, completion: complete) { finish?($0) }
+    }
+
+    public func prepare(_ intent: Intent, completion: IDisplayer.Completion? = nil) -> Delivery<RouteResult> {
+        return getRouter().prepare(intent, source: subject, completion: completion)
     }
 
 }
