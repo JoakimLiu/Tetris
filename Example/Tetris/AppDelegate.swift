@@ -17,9 +17,8 @@ class AppDelegate: TetrisAppDelegate {
 
     override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
-//        Tetris.initialization()
-
-        Tetris.start(Moduler(), Router(), Server())
+//        Tetris.start(moduler: Moduler(), router: Router(), server: Server())
+        Tetris.start()
 
         let _ = super.application(application, didFinishLaunchingWithOptions: launchOptions)
 

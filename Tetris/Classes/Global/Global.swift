@@ -13,12 +13,12 @@ var globalModuler: Moduler!
 var globalRouter: Router!
 var globalServer: Server!
 
-public func start(_ moduler: Moduler? = Moduler.default,
-                           _ router: Router? = Router.default,
-                           _ servicer: Server? = Server.default) {
+public func start(moduler: Moduler? = Moduler.default,
+                  router: Router? = Router.default,
+                  server: Server? = Server.default) {
     globalRouter = router
     globalModuler = moduler
-    globalServer = servicer
+    globalServer = server
     TetrisAwaker.action
 }
 
@@ -67,6 +67,12 @@ public extension IComponent where Self : IService {
     }
 }
 
+public typealias IActionComponent = (IComponent & IRouterAction & Initializable)
+public extension IComponent where Self : IRouterAction, Self: Initializable{
+    static func tetrisAwake() {
+        try? getRouter().register(action: Self.init())
+    }
+}
 
 
 

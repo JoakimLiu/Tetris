@@ -14,9 +14,9 @@ public protocol IListener {
     func onReceive(_ wave: Voice?)
 }
 
-class ListenerWrapper<T> : IListener, Equatable {
+class ListenerHelper<T> : IListener, Equatable {
 
-    static func == (lhs: ListenerWrapper<T>, rhs: ListenerWrapper<T>) -> Bool {
+    static func == (lhs: ListenerHelper<T>, rhs: ListenerHelper<T>) -> Bool {
         return lhs === rhs
     }
 
@@ -35,9 +35,9 @@ class ListenerWrapper<T> : IListener, Equatable {
 }
 
 public class Remover<T> {
-    var wrapper: ListenerWrapper<T>
+    var wrapper: ListenerHelper<T>
     var broadcast: Broadcast<T>
-    init(wrapper: ListenerWrapper<T>, broadcast: Broadcast<T>) {
+    init(wrapper: ListenerHelper<T>, broadcast: Broadcast<T>) {
         self.wrapper = wrapper
         self.broadcast = broadcast
     }
@@ -52,7 +52,7 @@ public class Remover<T> {
 
 public class Broadcast<Wave> {
 
-    var listeners: [ListenerWrapper<Wave>] = [ListenerWrapper<Wave>]()
+    var listeners: [ListenerHelper<Wave>] = [ListenerHelper<Wave>]()
 
     public init () {}
 
@@ -64,13 +64,22 @@ public class Broadcast<Wave> {
 
     @discardableResult
     public func listening(_ block: @escaping (Wave?) -> Void) -> Remover<Wave> {
-        let wrapper = ListenerWrapper.init(block)
+        let wrapper = ListenerHelper.init(block)
+        listeners.append(wrapper)
+        return Remover.init(wrapper: wrapper, broadcast: self)
+    }
+
+    @discardableResult
+    public func add<Listener: IListener>(listener: Listener) -> Remover<Wave> where Listener.Voice == Wave {
+        let wrapper = ListenerHelper<Wave>.init { (wave) in
+            listener.onReceive(wave)
+        }
         listeners.append(wrapper)
         return Remover.init(wrapper: wrapper, broadcast: self)
     }
 
     public func removeListeners() {
-        listeners = [ListenerWrapper<Wave>]()
+        listeners = [ListenerHelper<Wave>]()
     }
 
 

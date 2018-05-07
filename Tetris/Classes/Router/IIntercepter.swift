@@ -18,7 +18,7 @@ public protocol IJudger {
     var source: UIViewController? {get}
     func getIntent() -> Intent
     func doSwitch(_ intent: Intent)
-    func doReject(_ errorInfo: [String:Any])
+    func doReject(_ error: Error)
     func doContinue()
 }
 
@@ -66,15 +66,15 @@ public class IntercepterResult {
 
     public var intent: Intent!
 
-    public var errorInfo: [String: Any]?
+    public var error: Error?
 
     public var intercepter: IIntercepter?
 
-    public init(status: Status, intent: Intent, errorInfo: [String: Any]?, intercepter: IIntercepter? = nil) {
+    public init(status: Status, intent: Intent, error: Error? = nil, intercepter: IIntercepter? = nil) {
         self.status = status
         self.intent = intent
-        self.errorInfo = errorInfo
         self.intercepter = intercepter
+        self.error = error
     }
 }
 
@@ -102,9 +102,9 @@ public class IntercepterManager {
             IntercepterJudger.init(intent: intent, source: source, continued: {
                 self._run(intent, source: source, intercepters: intercepters, index: index + 1, finish: finish)
             }, switched: { next in
-                finish(IntercepterResult.init(status: .switched, intent: next, errorInfo: nil))
-            }) { (errorInfo) in
-                finish(IntercepterResult.init(status: .rejected, intent: intent, errorInfo: errorInfo, intercepter: intercepters[index]))
+                finish(IntercepterResult.init(status: .switched, intent: next, error: nil))
+            }) { (error) in
+                finish(IntercepterResult.init(status: .rejected, intent: intent, error: error, intercepter: intercepters[index]))
             }
         }
 
@@ -116,7 +116,7 @@ public class IntercepterManager {
             // execute intercepter adjugement
             intercepters[index].doAdjudgement(getJudger())
         } else {
-            finish(IntercepterResult.init(status: .passed, intent: intent, errorInfo: nil))
+            finish(IntercepterResult.init(status: .passed, intent: intent, error: nil))
         }
 
     }
@@ -145,10 +145,10 @@ class IntercepterJudger: IJudger {
         switched(intent)
     }
 
-    func doReject(_ errorInfo: [String : Any]) {
+    func doReject(_ error: Error) {
         checkStart()
         rejectedFlag = true
-        reject(errorInfo)
+        reject(error)
     }
 
     func doContinue() {
@@ -167,9 +167,9 @@ class IntercepterJudger: IJudger {
 
     let continued: (() -> Void)!
     let switched: ((Intent) -> Void)!
-    let reject: (([String:Any]) -> Void)!
+    let reject: ((Error) -> Void)!
 
-    init(intent: Intent, source: UIViewController?, continued: @escaping ()->Void, switched: @escaping (Intent)-> Void, rejected: @escaping ([String:Any])->Void) {
+    init(intent: Intent, source: UIViewController?, continued: @escaping ()->Void, switched: @escaping (Intent)-> Void, rejected: @escaping (Error)->Void) {
         self.sourceIntent = intent
         self.source = source
         self.continued = continued

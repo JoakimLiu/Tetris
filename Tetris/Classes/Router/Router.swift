@@ -52,6 +52,24 @@ public protocol URLRoutable {
 
 // MARK: - View Action
 
+public enum RouterError: TetrisErrorable {
+
+    case routeLost(intent: Intent)
+
+    public var domain: String {return "Router lost!!"}
+
+    public var code: Int {return 3000}
+
+    public var info: [String : Any]? {
+        switch self {
+        case .routeLost(intent: _):
+            return nil
+        }
+    }
+
+
+}
+
 public extension Router {
 
     public func register(_ url: URLPresentable, type: Intentable.Type) throws {
@@ -65,7 +83,11 @@ public extension Router {
     public func prepare(_ intent: Intent, source: UIViewController? = nil, completion: IDisplayer.Completion? = nil) -> Delivery<RouteResult> {
         return Delivery<RouteResult>.init({ (p) in
             self.start(intent, source: source, completion: completion, finish: { (result) in
-                p.package(result, error: nil)
+                if let err = result.error {
+                    p.package(result, error: err)
+                } else {
+                    p.package(result, error: nil)
+                }
             })
             return nil
         })
@@ -86,7 +108,7 @@ public extension Router {
             case .switched:
                 self._start(result.intent, source: source, switched: true, completion: completion, finish: finish)
             case .rejected:
-                finish(RouteResult.init(status: .rejected, intent: result.intent, destination: nil, errorInfo: result.errorInfo))
+                finish(RouteResult.init(status: .rejected, intent: result.intent, destination: nil, error: result.error))
             case .passed:
                 if let target = intent.target {
 
@@ -102,7 +124,7 @@ public extension Router {
                     finish(RouteResult.init(status: switched ? .switched : .passed, intent: intent, destination: destination as? UIViewController))
                 } else {
                     // on lost
-                    finish(RouteResult.init(status: .lost, intent: intent))
+                    finish(RouteResult.init(status: .lost, intent: intent, destination: nil, error: RouterError.routeLost(intent: intent)))
                 }
             }
         }
@@ -150,18 +172,57 @@ public class RouteResult {
 
     public var destination: UIViewController?
     public var intent: Intent
-    public var errorInfo: [String: Any]?
+    public var error: Error?
     public var status: Status
 
-    public init(status: Status, intent: Intent, destination: UIViewController? = nil, errorInfo: [String: Any]? = nil) {
+    public init(status: Status, intent: Intent, destination: UIViewController? = nil, error: Error? = nil) {
         self.destination = destination
         self.status = status
         self.intent = intent
-        self.errorInfo = errorInfo
+        self.error = error
     }
 }
 
 // MARK: - Actions
+
+public protocol IRouterAction {
+    associatedtype Result
+    func routerAction(params: [String: Any], fragment: String?) -> Delivery<Result>
+    var actionURL: URLPresentable {get}
+}
+
+class ActionHelper<T>: IRouterAction {
+    
+    var actionURL: URLPresentable
+    typealias Result = T
+
+
+    func routerAction(params: [String : Any], fragment: String?) -> Delivery<T> {
+        if let next = nextAction {
+            return next(params, fragment)
+        }
+        return Delivery.init({ (p) in
+            self.action?(params, fragment, p)
+            return nil
+        })
+    }
+
+    var action: (([String: Any], String?, Packager<T>) -> Void)?
+
+    var nextAction: (([String: Any], String?) -> Delivery<T>)?
+
+
+    init(url: URLPresentable, block: @escaping ([String: Any], String?, Packager<T>) -> Void) {
+        self.action = block
+        self.actionURL = url
+    }
+
+    init<Next: IRouterAction>(_ next: Next) where Next.Result == T {
+        self.nextAction = next.routerAction
+        self.actionURL = next.actionURL
+    }
+}
+
 
 public extension Router {
 
@@ -169,7 +230,14 @@ public extension Router {
 
     public func register<Result>(_ url: URLPresentable, action: @escaping RouterAction<Result>) throws {
         if let result = try URLResult.init(url: url.toURL()) {
-            let path = NodePath.init(path: result.paths, value: action)
+            let path = NodePath.init(path: result.paths, value: ActionHelper.init(url: url, block: action))
+            actionTree.buildTree(nodePath: path)
+        }
+    }
+
+    public func register<Action: IRouterAction>(action: Action) throws {
+        if let result = try URLResult.init(url: action.actionURL.toURL()) {
+            let path = NodePath.init(path: result.paths, value: ActionHelper.init(action))
             actionTree.buildTree(nodePath: path)
         }
     }
@@ -180,23 +248,17 @@ public extension Router {
 
         if let result = result,
             let nodeRet = actionTree.findNode(by: result.paths),
-            let action: RouterAction<Result> = nodeRet.1.getValue() {
-
+            let action: ActionHelper<Result> = nodeRet.1.getValue() {
             var parameters = params
-
             result.params.forEach { (key, value) in
                 parameters[key] = value
             }
-
-            return Delivery.init({ (p) in
-                action(parameters, result.fragment, p)
-                return nil
-            })
-
+            return action.routerAction(params: parameters, fragment: result.fragment)
         } else {
             return Delivery.error(TetrisError.error(domain: "can not find action!!!", code: 1000, info: nil))
         }
     }
+
 }
 
 // MARK: - Broadcast

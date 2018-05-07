@@ -8,17 +8,23 @@
 
 import Tetris
 
-class A {
-    func method(_ temp: Int)  {
-
+class Action1: IActionComponent {
+    required init() {
     }
-
-    func method(_ temp: String)  {
-
+    var actionURL: URLPresentable = "/action/1"
+    typealias Result = Int
+    func routerAction(params: [String : Any], fragment: String?) -> Delivery<Int> {
+        return Delivery.package(177)
     }
+}
 
-    func method(_ temp: () -> Void)  {
-
+class Action2: IActionComponent {
+    required init() {
+    }
+    var actionURL: URLPresentable = "/action/2"
+    typealias Result = String
+    func routerAction(params: [String : Any], fragment: String?) -> Delivery<String> {
+        return Delivery.package("lkjsdflkj")
     }
 }
 
@@ -30,13 +36,8 @@ class DeliveryModule: LowPriorityModule, IModuleComponent {
 
     var broadcast = Broadcast<Int>()
 
+
     override func modulerInit(_ context: Context) {
-
-        A().method(1)
-        A().method("1")
-        A().method {
-
-        }
 
         Delivery<String>
             .init { (p) in
@@ -55,7 +56,7 @@ class DeliveryModule: LowPriorityModule, IModuleComponent {
             .package("1")
             .onNext {_,_ in print("on next")}
             .forceMap(2)
-            .transform { _ in Delivery<Int>.error(TetrisError.error(domain: nil, code: 1, info: nil))}
+            .transform { _ in Delivery<Int>.error(TetrisError.error(domain: "nil", code: 1, info: nil))}
             .catch({ (err) in
                 return Delivery.package("100")
             })
@@ -79,11 +80,12 @@ class DeliveryModule: LowPriorityModule, IModuleComponent {
             print("3")
         }
 
-        try? getRouter().register("/action/1") { (_, _, p: Packager<Int>) in
-            p.package(1, error: nil)
-        }
 
         let _ = try? getRouter().action("/action/1").receive { (ret: Int?, err) in
+            print(ret as Any)
+        }
+
+        let _ = try? getRouter().action("/action/2").receive { (ret: String?, err) in
             print(ret as Any)
         }
 
@@ -105,3 +107,36 @@ class DeliveryModule: LowPriorityModule, IModuleComponent {
 
     }
 }
+
+
+protocol Action {
+    associatedtype Base
+    func action() -> Base?
+}
+
+class ActionWrapper<T> : Action {
+    typealias Base = T
+
+    var value: T?
+
+    func action() -> T? {
+        return value
+    }
+
+    init(_ value: T?) {
+        self.value = value
+    }
+}
+
+class Manager<Value> {
+
+    func set<U: Action, T>(_ aa: U?) where U.Base == T {
+    }
+
+    func test() {
+        self.set(ActionWrapper.init(1))
+    }
+}
+
+
+

@@ -8,7 +8,6 @@
 
 import Foundation
 
-private struct RootNodeValue {}
 
 
 /// tree

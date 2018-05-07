@@ -9,6 +9,8 @@
 import Tetris
 
 class Intercepter1: NormalPriorityIntercepter, IComponent {
+    required init() {
+    }
     override func doAdjudgement(_ judger: IJudger) {
         print("\(self)")
         judger.doContinue()
@@ -16,6 +18,8 @@ class Intercepter1: NormalPriorityIntercepter, IComponent {
 }
 
 class Intercepter2: HighPriorityIntercepter, IComponent {
+    required init() {
+    }
     override func doAdjudgement(_ judger: IJudger) {
         print("\(self)")
         judger.doContinue()
@@ -23,6 +27,8 @@ class Intercepter2: HighPriorityIntercepter, IComponent {
 }
 
 class Intercepter4: HighPriorityIntercepter, IComponent {
+    required init() {
+    }
     override func doAdjudgement(_ judger: IJudger) {
         print("\(self)")
         judger.doContinue()
@@ -30,6 +36,8 @@ class Intercepter4: HighPriorityIntercepter, IComponent {
 }
 
 class Intercepter3: LowPriorityIntercepter, IComponent {
+    required init() {
+    }
     override func doAdjudgement(_ judger: IJudger) {
         print("\(self)")
         judger.doContinue()

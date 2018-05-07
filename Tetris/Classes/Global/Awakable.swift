@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol Awakable : class {
+public protocol Awakable {
     static func tetrisAwake()
 }
 

@@ -44,6 +44,8 @@ protocol Service2 {
 
 
 class Service1Impl: Service1, IServiceComponent {
+    required init() {
+    }
     static func config(_ profile: ServiceProfile<Service1>) {
         profile
             .setAwake { (r, s) in
@@ -55,8 +57,6 @@ class Service1Impl: Service1, IServiceComponent {
     typealias Interface = Service1
 
     var service2: Service2?
-
-    required init() { }
 
     func method1() {
         print("method1 execute")

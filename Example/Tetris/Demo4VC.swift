@@ -26,6 +26,9 @@ class Demo4VC: BaseVC, URLRoutable, IComponent {
 
 public class GlobalIntercepter: LowPriorityIntercepter, IComponent {
 
+    required public init() {
+    }
+
     public override var priority: IntercepterPriority {return IntercepterPriority_low - 1000}
 
     public override func doAdjudgement(_ judger: IJudger) {

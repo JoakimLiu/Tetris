@@ -67,7 +67,7 @@ extension MenuVC : UITableViewDataSource, UITableViewDelegate {
                 switch result!.status {
                 case .passed:print("passed")
                 case .switched: print("switched")
-                case .rejected: print("rejected: \(String(describing: result!.errorInfo))")
+                case .rejected: print("rejected: \(String(describing: result!.error))")
                 case .lost:print("lost")
                 }
             }
