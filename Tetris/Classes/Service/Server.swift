@@ -14,39 +14,36 @@ public class Server {
     public init() {}
     public static let `default` = Server()
 
-    var oriService = [String : IServiceProfile]()
-    var nameService = [String : IServiceProfile]()
+    var serviceTree = Tree()
+
+    let namePrefix = "name"
+    let typePrefix = "type"
 
     private func getName(with type: Any.Type) -> String {
         return "\(type.self)"
     }
 
-    public func register(_ profile: IServiceProfile) {
-        
+    public func register<Interface>(_ profile: ServiceProfile<Interface>) {
         if let name = profile.name {
-            if let _ = nameService[name] {
-                print("Service: \(name) has been registered!!!")
-                fatalError()
-            }
-            nameService[name] = profile
+            let np = NodePath.init(path: [namePrefix, name], value: profile)
+            serviceTree.buildTree(nodePath: np)
         } else {
-            let key = getName(with: profile.interface)
-            if let _ = oriService[key] {
-                print("Service: \(profile.interface) has been registered!!!")
-                fatalError()
-            }
-            oriService[key] = profile
+            let key = getName(with: profile.interfaceType)
+            let np = NodePath.init(path: [typePrefix, key], value: profile)
+            serviceTree.buildTree(nodePath: np)
         }
     }
 
-    public func get<Service>(_ name: String? = nil) -> Service? {
-        if let name = name {
-            let profile = nameService[name]
-            return profile?.getService() as? Service
-        } else {
-            let profile = oriService[getName(with: Service.self)]
-            return profile?.getService() as? Service
+    public func get<Interface>(_ name: String? = nil) -> Interface? {
+        if let name = name,
+            let findResult = serviceTree.findNode(by: [namePrefix, name]) {
+            let profile: ServiceProfile<Interface>? = findResult.1.getValue()
+            return profile?.getService()
+        } else if let findResult = serviceTree.findNode(by: [typePrefix, getName(with: Interface.self)]) {
+            let profile: ServiceProfile<Interface>? = findResult.1.getValue()
+            return profile?.getService()
         }
+        return nil
     }
 
 }

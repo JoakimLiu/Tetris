@@ -49,7 +49,7 @@ class Service1Impl: Service1, IServiceComponent {
     static func config(_ profile: ServiceProfile<Service1>) {
         profile
             .setAwake { (r, s) in
-                (s as! Service1Impl).service2 = r.get()
+                (s as! Service1Impl).service2 = r.get("service2")
             }
             .setName("service1")
     }
@@ -68,6 +68,8 @@ class Service2Impl: Service2, IServiceComponent {
     required init() {
     }
     static func config(_ profile: ServiceProfile<Service2>) {
+        profile
+        .setName("service2")
     }
     func method2() {
         print("method2 execute")
