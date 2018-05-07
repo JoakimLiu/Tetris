@@ -57,10 +57,10 @@ class DeliveryModule: LowPriorityModule, IModuleComponent {
             .onNext {_,_ in print("on next")}
             .forceMap(2)
             .transform { _ in Delivery<Int>.error(TetrisError.error(domain: "nil", code: 1, info: nil))}
-            .catch({ (err) in
+            .catch { (err) in
                 return Delivery.package("100")
-            })
-            .onSuccess({print($0 as Any)})
+            }
+            .onSuccess { print($0 as Any) }
             .receive { (ret, err) in
                 print("\(String(describing: ret)) \(String(describing: err))")
             }

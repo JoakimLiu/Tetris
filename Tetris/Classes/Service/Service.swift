@@ -26,11 +26,9 @@ public extension IService where Self : Initializable {
 
 public class ServiceProfile<Interface> {
 
-    public var name: String? = nil
-    public var singleton: Bool = false
-
-    // MARK: impl properties
-    lazy public var singletonInstance: Interface = generate()
+    var name: String? = nil
+    var singleton: Bool = false
+    lazy var singletonInstance: Interface = generate()
     var implType: Initializable.Type!
     var interfaceType: Interface.Type!
     var awake: (Server, Interface) -> Void = {_, _ in}
@@ -43,7 +41,7 @@ public class ServiceProfile<Interface> {
     }
 
     // MARK: methods
-    public func getService() -> Interface {
+    func getService() -> Interface {
         if singleton {
             return singletonInstance
         } else {
@@ -51,13 +49,15 @@ public class ServiceProfile<Interface> {
         }
     }
 
-    public func generate() -> Interface {
+    func generate() -> Interface {
         let impl = implType.init()
         if let servicer = servicer {
             awake(servicer, impl as! Interface)
         }
         return impl as! Interface
     }
+
+    // MARK: - public methods
 
     @discardableResult
     public func setAwake(_ awake: @escaping (Server, Interface) -> Void) -> Self {
