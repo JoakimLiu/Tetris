@@ -11,12 +11,12 @@ import Foundation
 
 public protocol IService {
     associatedtype Interface
-    static func profile() -> ServiceProfile<Interface>
+    static func serviceProfile() -> ServiceProfile<Interface>
     static func config(_ profile: ServiceProfile<Interface>)
 }
 
 public extension IService where Self : Initializable {
-    static func profile() -> ServiceProfile<Interface> {
+    static func serviceProfile() -> ServiceProfile<Interface> {
         return ServiceProfile.init(Interface.self, impl: Self.self)
     }
 }

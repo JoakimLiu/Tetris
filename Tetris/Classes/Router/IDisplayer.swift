@@ -40,6 +40,8 @@ public extension IDisplayer {
 
 open class PushPopDisplayer : IDisplayer {
 
+    public init() {}
+
     open func finishDisplay(_ vc: UIViewController, animated: Bool, complete: IDisplayer.Completion?) {
         guard let nav = vc.navigationController else {
             return
@@ -62,6 +64,8 @@ open class PushPopDisplayer : IDisplayer {
 }
 
 open class PresentDismissDisplayer : IDisplayer {
+
+    public init() {}
 
     open var source: UIViewController?
 
@@ -86,14 +90,14 @@ open class PresentDismissDisplayer : IDisplayer {
 
 
 public extension Intent {
-    public static func pushPop(url: String? = nil, target: Intentable.Type? = nil) -> Intent {
-        let intent = Intent.init(url: URL.init(string: url!), target: target)
+    public static func pushPop(url: URLPresentable? = nil, target: Intentable.Type? = nil) -> Intent {
+        let intent = Intent.init(url: try! url?.toURL(), target: target)
         intent.displayer = PushPopDisplayer()
         return intent
     }
 
-    public static func presentDismiss(url: String? = nil, target: Intentable.Type? = nil) -> Intent {
-        let intent = Intent.init(url: URL.init(string: url!), target: target)
+    public static func presentDismiss(url: URLPresentable? = nil, target: Intentable.Type? = nil) -> Intent {
+        let intent = Intent.init(url: try! url?.toURL(), target: target)
         intent.displayer = PresentDismissDisplayer()
         return intent
     }

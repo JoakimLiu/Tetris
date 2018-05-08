@@ -59,7 +59,7 @@ public extension IComponent where Self : IIntercepter {
 public typealias IServiceComponent = (IService & IComponent)
 public extension IComponent where Self : IService {
     static func tetrisAwake() {
-        let p = profile()
+        let p = serviceProfile()
         config(p)
         let servicer = getServer()
         p.servicer = servicer
@@ -67,8 +67,8 @@ public extension IComponent where Self : IService {
     }
 }
 
-public typealias IActionComponent = (IComponent & IRouterAction & Initializable)
-public extension IComponent where Self : IRouterAction, Self: Initializable{
+public typealias IActionComponent = (IComponent & IRouterAction)
+public extension IComponent where Self : IRouterAction {
     static func tetrisAwake() {
         try? getRouter().register(action: Self.init())
     }

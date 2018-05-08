@@ -217,9 +217,9 @@ class ActionHelper<T>: IRouterAction {
         self.actionURL = url
     }
 
-    init<Next: IRouterAction>(_ next: Next) where Next.Result == T {
-        self.nextAction = next.routerAction
-        self.actionURL = next.actionURL
+    init<Action: IRouterAction>(_ action: Action) where Action.Result == T {
+        self.nextAction = action.routerAction
+        self.actionURL = action.actionURL
     }
 }
 

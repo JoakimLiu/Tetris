@@ -80,6 +80,26 @@ extension _TetrisNamespaceWrapper where Subject : UIViewController {
         return getRouter().prepare(intent, source: subject, completion: completion)
     }
 
+    public func navigate(_ url: URLPresentable?,
+                         target: Intentable.Type? = nil,
+                         params: [String: Any]? = nil,
+                         displayer: IDisplayer? = nil,
+                         completion: IDisplayer.Completion? = nil) {
+
+
+        print("error: you should pass a url or a intentable type!!!!")
+        assert(url != nil || target != nil, "you should pass a url or a intentable type!!!!")
+
+        let intent = Intent.pushPop(url: url, target: target)
+        if let displayer = displayer {
+            intent.displayer = displayer
+        }
+        subject.ts.start(intent: intent, complete: completion) { (_) in
+
+        }
+
+    }
+
 }
 
 

@@ -9,7 +9,7 @@
 import UIKit
 import Tetris
 
-class MenuVC: BaseVC, URLRoutable, IComponent {
+class MenuVC: BaseVC, IRouterComponent {
 
     var data = [
         ("1. Just Route!!", {return Intent.pushPop(url: "/demo/1")}),
