@@ -9,7 +9,7 @@
 import UIKit
 import Tetris
 
-class Demo2VC: BaseVC, URLRoutable, IComponent {
+class Demo2VC: BaseVC, IRouterComponent {
 
     class var routableURL: URLPresentable {return "/demo/2"}
 
@@ -22,11 +22,5 @@ class Demo2VC: BaseVC, URLRoutable, IComponent {
 
         alert(msg: "\(sourceIntent!.params)")
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
 
 }

@@ -17,7 +17,6 @@ class AppDelegate: TetrisAppDelegate {
 
     override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
-//        Tetris.start(moduler: Moduler(), router: Router(), server: Server())
         Tetris.start()
 
         let _ = super.application(application, didFinishLaunchingWithOptions: launchOptions)
@@ -35,5 +34,21 @@ class AppDelegate: TetrisAppDelegate {
         return true
 
     }
+
+    func aaa() {
+        let a: Any = 1
+        let b: Any = 2
+
+        let ta = type(of: a)
+        let tb = type(of: b)
+
+        if ta == tb {
+            
+        }
+    }
 }
+
+
+
+
 

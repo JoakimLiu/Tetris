@@ -70,7 +70,7 @@ public extension IComponent where Self : IService {
 public typealias IActionComponent = (IComponent & IRouterAction)
 public extension IComponent where Self : IRouterAction {
     static func tetrisAwake() {
-        try? getRouter().register(action: Self.init())
+        getRouter().register(action: Self.init())
     }
 }
 

@@ -81,11 +81,11 @@ class DeliveryModule: LowPriorityModule, IModuleComponent {
         }
 
 
-        let _ = try? getRouter().action("/action/1").receive { (ret: Int?, err) in
+        getRouter().action("/action/1").receive { (ret: Int?, err) in
             print(ret as Any)
         }
 
-        let _ = try? getRouter().action("/action/2").receive { (ret: String?, err) in
+        getRouter().action("/action/2").receive { (ret: String?, err) in
             print(ret as Any)
         }
 
@@ -97,10 +97,10 @@ class DeliveryModule: LowPriorityModule, IModuleComponent {
         broadcast.post(100)
 
         let mycast = Broadcast<[String : Any]>()
-        try? getRouter().register("/cast/1", broadcast: mycast)
-        let _ = try? getRouter().broadcast("/cast/1")?.listening({print("\($0 as Any)")})
-        let _ = try? getRouter().broadcast("/cast/1")?.listening({print("\($0 as Any)")})
-        let _ = try? getRouter().broadcast("/cast/1")?.listening({print("\($0 as Any)")})
+        getRouter().register("/cast/1", broadcast: mycast)
+        getRouter().broadcast("/cast/1")?.listening({print("\($0 as Any)")})
+        getRouter().broadcast("/cast/1")?.listening({print("\($0 as Any)")})
+        getRouter().broadcast("/cast/1")?.listening({print("\($0 as Any)")})
 
         mycast.post(["1" : 1])
 

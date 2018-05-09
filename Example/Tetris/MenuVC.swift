@@ -55,10 +55,6 @@ extension MenuVC : UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         let intent = data[indexPath.row].1()
 
-        intent.onResult { (ret: String?, code) in
-            print("response: \(ret as Any), code: \(code)")
-        }
-
         self
             .ts
             .prepare(intent) {

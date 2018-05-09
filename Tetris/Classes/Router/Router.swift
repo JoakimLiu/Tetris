@@ -7,26 +7,6 @@
 
 import Foundation
 
-public protocol URLPresentable {
-    func toURL() throws -> URL
-}
-
-extension String : URLPresentable {
-    public func toURL() throws -> URL {
-        if let url = URL.init(string: self) {
-            return url
-        }
-        throw TetrisError.error(domain: "url convert fail", code: 2000, info: nil)
-    }
-}
-
-extension URL : URLPresentable {
-    public func toURL() throws -> URL {
-        return self
-    }
-}
-
-
 public class Router {
 
     var viewTree = Tree()
@@ -228,23 +208,23 @@ public extension Router {
 
     public typealias RouterAction<T> = ([String: Any], String?, Packager<T>) -> Void
 
-    public func register<Result>(_ url: URLPresentable, action: @escaping RouterAction<Result>) throws {
-        if let result = try URLResult.init(url: url.toURL()) {
+    public func register<Result>(_ url: URLPresentable, action: @escaping RouterAction<Result>) {
+        if let result = URLResult.init(url: url) {
             let path = NodePath.init(path: result.paths, value: ActionHelper.init(url: url, block: action))
             actionTree.buildTree(nodePath: path)
         }
     }
 
-    public func register<Action: IRouterAction>(action: Action) throws {
-        if let result = try URLResult.init(url: action.actionURL.toURL()) {
+    public func register<Action: IRouterAction>(action: Action)  {
+        if let result = URLResult.init(url: action.actionURL) {
             let path = NodePath.init(path: result.paths, value: ActionHelper.init(action))
             actionTree.buildTree(nodePath: path)
         }
     }
 
-    public func action<Result>(_ url: URLPresentable, params: [String : Any] = [:]) throws -> Delivery<Result> {
+    public func action<Result>(_ url: URLPresentable, params: [String : Any] = [:]) -> Delivery<Result> {
 
-        let result = try URLResult.init(url: url.toURL())
+        let result = URLResult.init(url: url)
 
         if let result = result,
             let nodeRet = actionTree.findNode(by: result.paths),
@@ -265,15 +245,15 @@ public extension Router {
 
 extension Router {
 
-    public func register(_ url: URLPresentable, broadcast: Broadcast<[String: Any]>) throws {
-        if let result = try URLResult.init(url: url.toURL()) {
+    public func register(_ url: URLPresentable, broadcast: Broadcast<[String: Any]>) {
+        if let result = URLResult.init(url: url) {
             let path = NodePath.init(path: result.paths, value: broadcast)
             broadTree.buildTree(nodePath: path)
         }
     }
 
-    public func broadcast(_ url: URLPresentable) throws -> Broadcast<[String: Any]>? {
-        if let result = try URLResult.init(url: url.toURL()),
+    public func broadcast(_ url: URLPresentable) -> Broadcast<[String: Any]>? {
+        if let result = URLResult.init(url: url),
             let findResult = broadTree.findNode(by: result.paths),
             let broadcast: Broadcast<[String: Any]> = findResult.1.getValue() {
             return broadcast
@@ -290,7 +270,7 @@ public struct URLResult {
 
     public var params: [String:String] = [String:String]()
 
-    public private(set) var url: URL
+    public private(set) var url: URLPresentable
 
     public private(set) var scheme: String?
 
@@ -306,30 +286,36 @@ public struct URLResult {
 
     public private(set) var fragment: String?
 
-    public init?(url: URL) {
+    public init?(url: URLPresentable) {
         self.url = url
 
-        guard let com = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+
+        do {
+            guard let com = try URLComponents(url: url.toURL(), resolvingAgainstBaseURL: false) else {
+                return nil
+            }
+
+            let paths = com.path.components(separatedBy: "/").filter({$0.count > 0})
+
+            scheme = com.scheme
+            host = com.host
+            path = com.path
+            query = com.query
+            port = com.port
+
+            var params = [String:String]()
+
+            com.queryItems?.forEach({ (item) in
+                params[item.name] = item.value
+            })
+
+            self.params = params
+            self.fragment = com.fragment
+            self.paths = paths
+        } catch {
+            print("error: \(error)!!!")
             return nil
         }
-
-        let paths = com.path.components(separatedBy: "/").filter({$0.count > 0})
-
-        scheme = com.scheme
-        host = com.host
-        path = com.path
-        query = com.query
-        port = com.port
-
-        var params = [String:String]()
-
-        com.queryItems?.forEach({ (item) in
-            params[item.name] = item.value
-        })
-
-        self.params = params
-        self.fragment = com.fragment
-        self.paths = paths
 
     }
 

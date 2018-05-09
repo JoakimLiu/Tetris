@@ -24,10 +24,7 @@ class Demo4VC: BaseVC, URLRoutable, IComponent {
 
 
 
-public class GlobalIntercepter: LowPriorityIntercepter, IComponent {
-
-    required public init() {
-    }
+final public class GlobalIntercepter: LowPriorityIntercepter, IComponent {
 
     public override var priority: IntercepterPriority {return IntercepterPriority_low - 1000}
 
