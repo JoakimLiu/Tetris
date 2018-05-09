@@ -31,10 +31,6 @@ class MenuVC: BaseVC, IRouterComponent {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "1")
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 
 }
 
@@ -58,6 +54,10 @@ extension MenuVC : UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let intent = data[indexPath.row].1()
+
+        intent.onResult { (ret: String?, code) in
+            print("response: \(ret as Any), code: \(code)")
+        }
 
         self
             .ts

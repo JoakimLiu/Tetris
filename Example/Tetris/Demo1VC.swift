@@ -22,11 +22,13 @@ class Demo1VC: BaseVC, IRouterComponent, IFinalIntercepter {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Demo1"
+        ts.sendResp("demo1 response", response: 1)
         // Do any additional setup after loading the view.
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        ts.sendResp("demo1 response 2", response: 2)
     }
 
 }

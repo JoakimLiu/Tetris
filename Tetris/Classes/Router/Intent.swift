@@ -12,13 +12,14 @@ public protocol Intentable {
     var sourceIntent: Intent? {get set}
 }
 
-public protocol ResponseReceivable {
-    func didReceive<T>(resp: T?, sender: Any, response respCode: Int, request reqCode: Int);
+public protocol ResultReceivable {
+    func didReceive<T>(resp: T?, response respCode: Int);
 }
 
-public typealias IntentResponse<T> = (T?, Any, Int, Int) -> Void
+public typealias ResultBlock<T> = (T?, Int) -> Void
 
 public class Intent {
+
 
     public var target: Intentable.Type?
 
@@ -29,31 +30,34 @@ public class Intent {
 
     public var params = [String : Any]()
 
-    public var scheme: String?
-    public var host: String?
-    public var port: Int?
-    public var path: String?
-    public var query: String?
-    public var fragment: String?
+    public internal(set) var scheme: String?
+    public internal(set) var host: String?
+    public internal(set) var port: Int?
+    public internal(set) var path: String?
+    public internal(set) var query: String?
+    public internal(set) var fragment: String?
 
     public var displayer: IDisplayer?
 
-    public var recevable: ResponseReceivable?
+    private lazy var response: Response = Response()
 
     public func add(_ param: Any, for key: String) {
         params[key] = param
     }
 
     public func add(_ params: [String: Any]) {
-        self.params.merge(params, uniquingKeysWith: {return $1})
+        self.params.merge(params, uniquingKeysWith: {$1})
     }
 
-    public func setupResp<Result>(_ resp: @escaping IntentResponse<Result>) {
-        recevable = DefaultReceiver.init(resp)
+    public func onResult<Result>(_ resp: @escaping ResultBlock<Result>) {
+        response.onResultAction(resp)
     }
 
-    public func sendResp<T>(_ resp: T?, sender: Any, response respCode: Int = 0) {
-        recevable?.didReceive(resp: resp, sender: sender, response: respCode, request: requestCode)
+
+    public func sendResult<T>(_ resp: T?, response respCode: Int = 0) {
+        response.setupResult { (receiver) in
+            receiver?.didReceive(resp: resp, response: respCode)
+        }
     }
 
     public init() {
@@ -61,7 +65,7 @@ public class Intent {
     }
 
     deinit {
-
+        response.send()
     }
 
     public init(url: URL? = nil, target: Intentable.Type? = nil) {
@@ -72,15 +76,28 @@ public class Intent {
 }
 
 
-public class DefaultReceiver: ResponseReceivable {
 
-    var response: Any?
+class Response: ResultReceivable {
 
-    public init<T>(_ resp: @escaping IntentResponse<T>) {
-        self.response = resp as Any
+    private var receiveAction: Any?
+
+    private var action: ((ResultReceivable?) -> Void)?
+
+    func setupResult(_ block: @escaping (ResultReceivable?) -> Void) {
+        self.action = block
     }
 
-    public func didReceive<T>(resp: T?, sender: Any, response respCode: Int, request reqCode: Int) {
-        (response as? IntentResponse)?(resp, sender, respCode, reqCode)
+    func onResultAction<T>(_ action: @escaping ResultBlock<T>) {
+        receiveAction = action as Any
+    }
+
+    func didReceive<T>(resp: T?, response respCode: Int) {
+        (receiveAction as? ResultBlock)?(resp, respCode)
+    }
+
+    func send() {
+        action?(self)
     }
 }
+
+

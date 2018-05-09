@@ -60,9 +60,9 @@ extension _TetrisNamespaceWrapper where Subject : UINavigationController {
 
 extension _TetrisNamespaceWrapper where Subject : UIViewController {
 
-    public func sendResp<T>(_ resp: T?) {
+    public func sendResp<T>(_ resp: T?, response code: Int = 0) {
         if let vc = subject as? Intentable {
-            vc.sourceIntent?.sendResp(resp, sender: vc)
+            vc.sourceIntent?.sendResult(resp, response: code)
         }
     }
 
