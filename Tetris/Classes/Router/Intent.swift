@@ -8,7 +8,6 @@
 import Foundation
 
 public protocol Intentable {
-    init()
     var sourceIntent: Intent? {get set}
 }
 
@@ -18,11 +17,12 @@ public protocol ResultReceivable {
 
 public typealias ResultBlock<T> = (T?) -> Void
 
+public typealias IntentTargetable = (Intentable & Initializable)
+
 public class Intent {
+    
 
-
-
-    public var target: Intentable.Type?
+    public var target: IntentTargetable.Type?
     public var url: URLPresentable?
     public var params = [String : Any]()
     public var displayer: IDisplayer?
@@ -38,7 +38,7 @@ public class Intent {
 
     // MARK: initializer
 
-    public init(url: URLPresentable? = nil, target: Intentable.Type? = nil) {
+    public init(url: URLPresentable? = nil, target: IntentTargetable.Type? = nil) {
         self.target = target
         self.url = url
     }

@@ -24,7 +24,7 @@ class TetrisInitializableTests: XCTestCase, Awakable {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        TetrisAwaker.action
+        Tetris.start()
     }
     
     override func tearDown() {

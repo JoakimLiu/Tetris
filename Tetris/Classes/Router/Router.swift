@@ -52,9 +52,9 @@ public enum RouterError: TetrisErrorable {
 
 public extension Router {
 
-    public func register(_ url: URLPresentable, type: Intentable.Type) throws {
+    public func register(_ url: URLPresentable, type: Intentable.Type) {
 
-        guard let result = try URLResult.init(url: url.toURL()) else {
+        guard let result = URLResult.init(url: url) else {
             return
         }
         viewTree.buildTree(nodePath: NodePath.init(path: result.paths, value: type))

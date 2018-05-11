@@ -19,7 +19,7 @@ public func start(moduler: Moduler? = Moduler.default,
     globalRouter = router
     globalModuler = moduler
     globalServer = server
-    TetrisAwaker.action
+    TetrisAwaker.awake()
 }
 
 public func getModuler() -> Moduler {
@@ -34,30 +34,31 @@ public func getServer() -> Server {
     return globalServer
 }
 
+public typealias IComponent = (Awakable & Initializable)
 
 public typealias IModuleComponent = (IComponent)
-public extension IComponent where Self : AbstractModule {
+public extension Awakable where Self : AbstractModule {
     public static func tetrisAwake() {
         getModuler().register(Self.init())
     }
 }
 
-public typealias IRouterComponent = (URLRoutable & IComponent)
-public extension IComponent where Self : URLRoutable, Self : UIViewController, Self : Intentable {
+public typealias IRouterComponent = (URLRoutable & Awakable)
+public extension Awakable where Self : Intentable, Self : URLRoutable, Self : UIViewController {
     static func tetrisAwake() {
-        try! getRouter().register(self.routableURL, type: Self.self)
+        getRouter().register(self.routableURL, type: Self.self)
     }
 }
 
 public typealias IIntercepterComponent = (IIntercepter & IComponent)
-public extension IComponent where Self : IIntercepter {
+public extension Awakable where Self : IIntercepter, Self : Initializable {
     static func tetrisAwake() {
         getRouter().intercepterMgr.add(Self.init())
     }
 }
 
-public typealias IServiceComponent = (IService & IComponent)
-public extension IComponent where Self : IService {
+public typealias IServiceComponent = (IService & Awakable & Initializable)
+public extension Awakable where Self : IService {
     static func tetrisAwake() {
         let p = serviceProfile()
         config(p)
@@ -67,8 +68,8 @@ public extension IComponent where Self : IService {
     }
 }
 
-public typealias IActionComponent = (IComponent & IRouterAction)
-public extension IComponent where Self : IRouterAction {
+public typealias IActionComponent = (Awakable & IRouterAction & Initializable)
+public extension Awakable where Self : IRouterAction, Self : Initializable {
     static func tetrisAwake() {
         getRouter().register(action: Self.init())
     }

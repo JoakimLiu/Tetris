@@ -16,7 +16,7 @@ public enum ModulePriority: Int, Prioritable {
     case high = 10000
 }
 
-public protocol Modulable : Initializable {
+public protocol Modulable {
 
     var priority: Prioritable {get}
 
@@ -48,6 +48,7 @@ public protocol Modulable : Initializable {
 // 因为swift4的协议柯里化存在编译问题，暂时方法使用类进行定义，待 swift 修复之后再使用协议
 open class AbstractModule : Modulable {
     public required init() {}
+    
     open var priority: Prioritable { return ModulePriority.low }
 
     open func modulerDidTrigger(_ event: Int, userInfo: [String: Any]) {}

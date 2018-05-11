@@ -9,7 +9,7 @@
 import UIKit
 import Tetris
 
-class Demo4VC: BaseVC, URLRoutable, IComponent {
+class Demo4VC: BaseVC, IRouterComponent {
 
     static var routableURL: URLPresentable {return "/demo/4"}
 
@@ -24,7 +24,7 @@ class Demo4VC: BaseVC, URLRoutable, IComponent {
 
 
 
-final public class GlobalIntercepter: LowPriorityIntercepter, IComponent {
+final public class GlobalIntercepter: LowPriorityIntercepter, IModuleComponent {
 
     public override var priority: Prioritable {return IntercepterPriority.low.priority - 1000}
 

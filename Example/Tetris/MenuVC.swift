@@ -16,6 +16,7 @@ class MenuVC: BaseVC, IRouterComponent {
         ("2. Parameters", {return Intent.pushPop(url: "/demo/2?a=a&b=b")}),
         ("3. Final intercepter", {return Intent.pushPop(url: "/demo/3")}),
         ("4. Global lost", {return Intent.pushPop(url: "/sdf/sdfoihg/sdkgjlj")}),
+        ("x. Pixel demo", {return Intent.pushPop(url: "/demo/pixcel")}),
     ]
 
     var tableView: UITableView!

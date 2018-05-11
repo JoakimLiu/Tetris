@@ -90,13 +90,13 @@ open class PresentDismissDisplayer : IDisplayer {
 
 
 public extension Intent {
-    public static func pushPop(url: URLPresentable? = nil, target: Intentable.Type? = nil) -> Intent {
+    public static func pushPop(url: URLPresentable? = nil, target: IntentTargetable.Type? = nil) -> Intent {
         let intent = Intent.init(url: try! url?.toURL(), target: target)
         intent.displayer = PushPopDisplayer()
         return intent
     }
 
-    public static func presentDismiss(url: URLPresentable? = nil, target: Intentable.Type? = nil) -> Intent {
+    public static func presentDismiss(url: URLPresentable? = nil, target: IntentTargetable.Type? = nil) -> Intent {
         let intent = Intent.init(url: try! url?.toURL(), target: target)
         intent.displayer = PresentDismissDisplayer()
         return intent

@@ -87,7 +87,7 @@ extension _TetrisNamespaceWrapper where Subject : UIViewController {
     }
 
     public func navigate(_ url: URLPresentable?,
-                         target: Intentable.Type? = nil,
+                         target: IntentTargetable.Type? = nil,
                          params: [String: Any]? = nil,
                          displayer: IDisplayer? = nil,
                          completion: IDisplayer.Completion? = nil) {
