@@ -9,15 +9,16 @@ import Foundation
 
 
 // MARK: - Priority
-
-public typealias ModulePriority = Int
-public let ModulePriority_low: ModulePriority = 1000
-public let ModulePriority_normal: ModulePriority = 5000
-public let ModulePriority_high: ModulePriority = 10000
+public enum ModulePriority: Int, Prioritable {
+    public var priority: Int {return self.rawValue}
+    case low = 1000
+    case normal = 5000
+    case high = 10000
+}
 
 public protocol Modulable : Initializable {
 
-    var priority: ModulePriority {get}
+    var priority: Prioritable {get}
 
     func modulerDidTrigger(_ event: Int, userInfo: [String: Any])
 
@@ -47,7 +48,7 @@ public protocol Modulable : Initializable {
 // 因为swift4的协议柯里化存在编译问题，暂时方法使用类进行定义，待 swift 修复之后再使用协议
 open class AbstractModule : Modulable {
     public required init() {}
-    open var priority: ModulePriority { return ModulePriority_low }
+    open var priority: Prioritable { return ModulePriority.low }
 
     open func modulerDidTrigger(_ event: Int, userInfo: [String: Any]) {}
     open func modulerInit(_ context: Context) {}
@@ -67,11 +68,11 @@ open class AbstractModule : Modulable {
 }
 
 open class HighPriorityModule : AbstractModule {
-    open override var priority: ModulePriority {return ModulePriority_high}
+    open override var priority: Prioritable {return ModulePriority.high}
 }
 open class NormalPriorityModule : AbstractModule {
-    open override var priority: ModulePriority {return ModulePriority_normal}
+    open override var priority: Prioritable {return ModulePriority.normal}
 }
 open class LowPriorityModule : AbstractModule {
-    open override var priority: ModulePriority {return ModulePriority_low}
+    open override var priority: Prioritable {return ModulePriority.low}
 }

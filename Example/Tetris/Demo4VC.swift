@@ -26,7 +26,7 @@ class Demo4VC: BaseVC, URLRoutable, IComponent {
 
 final public class GlobalIntercepter: LowPriorityIntercepter, IComponent {
 
-    public override var priority: IntercepterPriority {return IntercepterPriority_low - 1000}
+    public override var priority: Prioritable {return IntercepterPriority.low.priority - 1000}
 
     public override func doAdjudgement(_ judger: IJudger) {
         if let _ = judger.getIntent().target {

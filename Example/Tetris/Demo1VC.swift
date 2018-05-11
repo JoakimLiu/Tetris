@@ -19,6 +19,9 @@ class Demo1VC: BaseVC, IRouterComponent {
         super.viewDidLoad()
         navigationItem.title = "Demo1"
         ts._send(result: "demo1 response")
+        sourceIntent?._send(signal: "signal 1")
+        sourceIntent?._send(signal: "signal 2")
+        sourceIntent?._send(signal: "signal 3")
     }
 
     override func viewDidAppear(_ animated: Bool) {

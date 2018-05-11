@@ -18,7 +18,7 @@ public class Moduler {
 
     public func register(_ module: AbstractModule) {
         let priority = module.priority
-        let index = modules.index { $0.priority < priority }
+        let index = modules.index { $0.priority.priority < priority.priority }
         if let idx = index {
             modules.insert(module, at: idx)
         } else {

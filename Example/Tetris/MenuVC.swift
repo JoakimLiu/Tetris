@@ -54,6 +54,14 @@ extension MenuVC : UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let intent = data[indexPath.row].1()
+        
+        intent._onResult(code: 0) { (ret: String?) in
+            print("on result code: 0, ret: \(ret as Any)")
+        }
+        
+        intent._onSignal { (ret: String?) in
+            print("on signal: \(ret as Any)")
+        }
 
         self
             .ts

@@ -30,7 +30,7 @@ class Action2: IActionComponent {
 
 class DeliveryModule: LowPriorityModule, IModuleComponent {
 
-    override var priority: ModulePriority {return ModulePriority_low - 100}
+    override var priority: Prioritable {return ModulePriority.low.priority - 100}
 
     var delivery = Delivery.package(200)
 

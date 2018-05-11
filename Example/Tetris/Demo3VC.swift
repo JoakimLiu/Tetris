@@ -9,7 +9,7 @@
 import UIKit
 import Tetris
 
-class Demo3VC: BaseVC, URLRoutable, IComponent, IFinalIntercepter {
+class Demo3VC: BaseVC, IRouterComponent, IFinalIntercepter {
 
     class var routableURL: URLPresentable {return "/demo/3"}
 
@@ -23,10 +23,4 @@ class Demo3VC: BaseVC, URLRoutable, IComponent, IFinalIntercepter {
 
         // Do any additional setup after loading the view.
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 }

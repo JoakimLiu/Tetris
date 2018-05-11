@@ -8,10 +8,12 @@
 import Foundation
 
 // MARK: - IntercepterPriority
-public typealias IntercepterPriority = Int
-public let IntercepterPriority_low: IntercepterPriority = 1000
-public let IntercepterPriority_normal: IntercepterPriority = 5000
-public let IntercepterPriority_high: IntercepterPriority = 10000
+public enum IntercepterPriority: Int, Prioritable {
+    public var priority: Int { return self.rawValue }
+    case low = 1000
+    case normal = 5000
+    case high = 10000
+}
 
 // MARK: - IntercepterAdjudgement
 public protocol IJudger {
@@ -26,7 +28,7 @@ public protocol IJudger {
 // MARK: - IIntercepter
 public protocol IIntercepter {
 
-    var priority: IntercepterPriority {get}
+    var priority: Prioritable {get}
 
     func doAdjudgement(_ judger: IJudger)
 }
@@ -34,19 +36,19 @@ public protocol IIntercepter {
 
 open class IntercepterAdaptor: IIntercepter {
     public required init() {}
-    open var priority: IntercepterPriority {return IntercepterPriority_low}
+    open var priority: Prioritable { return IntercepterPriority.low }
     open func doAdjudgement(_ judger: IJudger) {
         judger.doContinue()
     }
 }
 open class HighPriorityIntercepter: IntercepterAdaptor {
-    open override var priority: IntercepterPriority {return IntercepterPriority_high}
+    open override var priority: Prioritable {return IntercepterPriority.high}
 }
 open class NormalPriorityIntercepter: IntercepterAdaptor {
-    open override var priority: IntercepterPriority {return IntercepterPriority_normal}
+    open override var priority: Prioritable {return IntercepterPriority.normal}
 }
 open class LowPriorityIntercepter: IntercepterAdaptor {
-    open override var priority: IntercepterPriority {return IntercepterPriority_low}
+    open override var priority: Prioritable {return IntercepterPriority.low}
 }
 
 // MARK: - FinalIntercepter
@@ -84,7 +86,7 @@ public class IntercepterManager {
     var intercepters = [IIntercepter]()
 
     public func add(_ interceter: IIntercepter) {
-        if let index = intercepters.index(where: {return $0.priority < interceter.priority}) {
+        if let index = intercepters.index(where: {return $0.priority.priority < interceter.priority.priority}) {
             intercepters.insert(interceter, at: index)
         } else {
             intercepters.append(interceter)
