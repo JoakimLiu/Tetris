@@ -7,6 +7,10 @@
 //
 
 #import "TestBridge.h"
+#import "Tetris_Example-Swift.h"
+
+@interface TestBridge() 
+@end
 
 @implementation TestBridge
 

@@ -141,7 +141,7 @@ extension Delivery {
     public func transform<U>(_ action: @escaping (T?) -> Delivery<U>) -> Delivery<U> {
         return bindOnSuccess({ (ret, p) in
             let d = action(ret)
-            d.receive {ret, _ in p.package(ret, error: nil) }
+            d.receive {ret, err in p.package(ret, error: err) }
         })
     }
 
@@ -221,6 +221,22 @@ extension Delivery {
                 action()
             })
         })
+    }
+    
+    public func retry(_ maxCount: Int = 1) -> Delivery<T> {
+        
+        if maxCount < 1 {
+            fatalError()
+        }
+        
+        let arr = Array(repeating: self, count: maxCount)
+        var temp = self
+        for d in arr {
+            temp = temp.catch({ (_) in
+                return d
+            })
+        }
+        return temp
     }
 
 }

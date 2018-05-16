@@ -104,6 +104,26 @@ class DeliveryModule: LowPriorityModule, IModuleComponent {
 
         mycast.post(["1" : 1])
 
+        
+
+        
+//        let d = Delivery<Int>.init { (p) in
+//            p.package(nil, error: TetrisError.error(domain: "", code: 100, info: nil))
+//            return nil
+//        }
+        let d =
+            Delivery
+                .package(1)
+                .transform { (_) in
+                    return Delivery<Int>.error(TetrisError.error(domain: "", code: 100, info: nil))
+                }
+        
+        
+        d
+        .retry()
+        .receive({
+            print("\($0 as Any) \($1 as Any)")
+        })
 
     }
 }

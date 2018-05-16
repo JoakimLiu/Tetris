@@ -43,7 +43,7 @@ public extension Awakable where Self : AbstractModule {
     }
 }
 
-public typealias IRouterComponent = (URLRoutable & Awakable)
+public typealias IRouterComponent = (URLRoutable & IComponent)
 public extension Awakable where Self : Intentable, Self : URLRoutable, Self : UIViewController {
     static func tetrisAwake() {
         getRouter().register(self.routableURL, type: Self.self)
@@ -57,7 +57,7 @@ public extension Awakable where Self : IIntercepter, Self : Initializable {
     }
 }
 
-public typealias IServiceComponent = (IService & Awakable & Initializable)
+public typealias IServiceComponent = (IService & IComponent)
 public extension Awakable where Self : IService {
     static func tetrisAwake() {
         let p = serviceProfile()
@@ -68,7 +68,7 @@ public extension Awakable where Self : IService {
     }
 }
 
-public typealias IActionComponent = (Awakable & IRouterAction & Initializable)
+public typealias IActionComponent = (IRouterAction & IComponent)
 public extension Awakable where Self : IRouterAction, Self : Initializable {
     static func tetrisAwake() {
         getRouter().register(action: Self.init())

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		095C9A2A20AC03F600B458C8 /* RxSwiftModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095C9A2920AC03F600B458C8 /* RxSwiftModule.swift */; };
 		09C3BD5820A5450500B54394 /* TestPixelDemoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C3BD5720A5450500B54394 /* TestPixelDemoVC.swift */; };
 		2DD5D9F4A588024A58BF7FD0 /* Pods_Tetris_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6707E4757D02E884B7AE8EC /* Pods_Tetris_Example.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		095C9A2920AC03F600B458C8 /* RxSwiftModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxSwiftModule.swift; sourceTree = "<group>"; };
 		09C3BD5720A5450500B54394 /* TestPixelDemoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPixelDemoVC.swift; sourceTree = "<group>"; };
 		2F2054620BC92AA75356FC16 /* Tetris.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Tetris.podspec; path = ../Tetris.podspec; sourceTree = "<group>"; };
 		424E17D4D157752E25C584D9 /* Pods-Tetris_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tetris_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tetris_Example/Pods-Tetris_Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 				A8F11A20209AAE7A00C9F2DE /* Injection.swift */,
 				A8F9EF04209C0FBF009CC2C0 /* DeliveryTest.swift */,
 				09C3BD5720A5450500B54394 /* TestPixelDemoVC.swift */,
+				095C9A2920AC03F600B458C8 /* RxSwiftModule.swift */,
 			);
 			name = "Example for Tetris";
 			path = Tetris;
@@ -418,6 +421,7 @@
 				A853A661209482A70011E9B0 /* TestBridge.m in Sources */,
 				A8F9EF05209C0FBF009CC2C0 /* DeliveryTest.swift in Sources */,
 				A853A67A2094EE280011E9B0 /* Demo3VC.swift in Sources */,
+				095C9A2A20AC03F600B458C8 /* RxSwiftModule.swift in Sources */,
 				A8F11A21209AAE7A00C9F2DE /* Injection.swift in Sources */,
 				607FACD81AFB9204008FA782 /* MenuVC.swift in Sources */,
 				A8EE58E320996BE100EF4615 /* Demo4VC.swift in Sources */,

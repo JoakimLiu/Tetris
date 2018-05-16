@@ -16,11 +16,7 @@ public protocol Initializable {
 }
 
 class TetrisAwaker {
-
-//    static let action: Void = {
-//        awake()
-//    }()
-
+    
     static func awake() {
         let typeCount = Int(objc_getClassList(nil, 0))
         let types = UnsafeMutablePointer<AnyClass>.allocate(capacity: typeCount)
@@ -35,4 +31,5 @@ class TetrisAwaker {
         print("\(end)")
         types.deallocate()
     }
+    
 }

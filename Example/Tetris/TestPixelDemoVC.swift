@@ -9,6 +9,11 @@
 import UIKit
 import Tetris
 
+@objc
+public protocol StaticMethodProtocol {
+    static func method()
+}
+
 class TestPixelDemoVC: BaseVC, IRouterComponent {
     
     static var routableURL: URLPresentable {return "/demo/pixcel"}
