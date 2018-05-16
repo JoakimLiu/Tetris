@@ -44,7 +44,7 @@ class DeliveryModule: LowPriorityModule, IModuleComponent {
                 DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + 2, execute: {
                     p.package("100", error: nil)
                 })
-                return DeliveryOrder.init({
+                return Order.init({
 
                 })
             }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class DeliveryOrder<T> {
+public class Order<T> {
 
     let action: () -> Void
 
@@ -38,7 +38,7 @@ public class Packager<T> {
 
 public class Delivery<T> {
 
-    public typealias WrapAction = (Packager<T>) -> DeliveryOrder<T>?
+    public typealias WrapAction = (Packager<T>) -> Order<T>?
     public typealias ReceiveAction = (T?, Error?) -> Void
 
     var action: WrapAction!
@@ -48,7 +48,7 @@ public class Delivery<T> {
     }
 
     @discardableResult
-    public func receive(_ receive: @escaping ReceiveAction) -> DeliveryOrder<T>? {
+    public func receive(_ receive: @escaping ReceiveAction) -> Order<T>? {
         let p = Packager<T>()
         p.receiveAction = receive
         let order = action(p)
@@ -98,11 +98,11 @@ extension Delivery {
 extension Delivery {
 
     public func bind<U>(_ action: @escaping (T?, Error?, Packager<U>) -> Void) -> Delivery<U> {
-        return Delivery<U>.init({ (p) -> DeliveryOrder<U>? in
+        return Delivery<U>.init({ (p) -> Order<U>? in
             let o = self.receive({ (ret, err) in
                 action(ret, err, p)
             })
-            return DeliveryOrder.init({
+            return Order.init({
                 o?.cancel()
             })
         })
@@ -206,7 +206,7 @@ extension Delivery {
     }
 
     public func first(_ action: @escaping () -> Void) -> Delivery<T> {
-        return Delivery.init({ (p) -> DeliveryOrder<T>? in
+        return Delivery.init({ (p) -> Order<T>? in
             action()
             return self.receive({ (ret, err) in
                 p.package(ret, error: err)
@@ -215,7 +215,7 @@ extension Delivery {
     }
 
     public func last(_ action: @escaping () -> Void) -> Delivery<T> {
-        return Delivery.init({ (p) -> DeliveryOrder<T>? in
+        return Delivery.init({ (p) -> Order<T>? in
             return self.receive({ (ret, err) in
                 p.package(ret, error: err)
                 action()
